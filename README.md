@@ -1,5 +1,8 @@
 # EDA-Simulator
+
 Simulator for EDA Scheduling on Hybrid Cloud Problem
+
+```
 eda-simulator/
 │
 ├── simulator/                 # Core scheduling logic
@@ -22,3 +25,4 @@ eda-simulator/
 ├── results/                  # (Optional) logs or output stats
 │
 └── main.py                   # Entry point
+```
