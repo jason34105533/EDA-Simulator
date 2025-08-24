@@ -116,6 +116,38 @@ class ResourceManager:
         
         return True
     
+
+    def can_schedule_job_on_cloud(self, job: Job):
+        """
+        Check if a job can be scheduled on cloud based on available CPU cores.
+        
+        :param job: The job to be checked.
+        :return: True if the job can be scheduled on cloud, False otherwise.
+        """
+        # Check CPU core availability on cloud
+        if self.resources['cloud']['available_cores'] >= job.cpu_cores:
+            for license in job.license:
+                if self.get_available_licenses(license.license_name) < license.license_count:
+                    return False
+            return True
+        return False
+    
+    def allocate_resources_on_cloud(self, job):
+        """
+        Allocate resources (CPU cores and licenses) for a job on cloud.
+        
+        :param job: The job for which resources are to be allocated.
+        :return: True if resources are successfully allocated, False otherwise.
+        """
+        
+        # Allocate licenses
+        for license in job.license:
+            if not self.allocate_license(license.license_name, license.license_count):
+                return False
+        
+        return True
+    
+    
     def allocate_resources(self, job):
         """
         Allocate resources (CPU cores and licenses) for a job.

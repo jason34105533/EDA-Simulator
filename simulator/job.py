@@ -41,7 +41,7 @@ class Job:
     
         
     def update_status(self, current_time):
-        if ((self.status == "pending") and current_time > self.deadline):
+        if ((self.status == "pending") and current_time >= self.deadline):
             self.status = "missed_deadline"
         
     def __repr__(self):

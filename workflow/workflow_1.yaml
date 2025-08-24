@@ -13,12 +13,12 @@ jobs:
   
   - job_id: job_002
     submit_time: 20
-    cpu_cores: 62
-    duration: 100
-    deadline: 800
+    cpu_cores: 82
+    duration: 10
+    deadline: 25
     license:
     - license_name: synopsys_dc
-      license_count: 2
+      license_count: 10
 
   - job_id: job_003
     submit_time: 10

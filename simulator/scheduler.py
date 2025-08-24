@@ -45,16 +45,29 @@ class Scheduler:
             
             job.update_status(self.current_time)
             
-            if job.status == 'missed_deadline':
-                print(f"Job '{job.job_id}' has missed its deadline.")
-                continue
-            elif job.status == 'pending':
-                    if self.resource_manager.can_schedule_job(job):
-                        self.resource_manager.allocate_resources(job)
-                        job.start(self.current_time)
-                        print(f"Job '{job.job_id}' scheduled successfully.")
+            if job.status == 'missed_deadline':  
+                # Just on time is also considered as missed, to force using cloud resources to avoid failed
+                print(f"Job '{job.job_id}' is missing its deadline.")
+                if self.resource_manager.can_schedule_job(job):
+                    self.resource_manager.allocate_resources(job)
+                    job.start(self.current_time)
+                    print(f"Job '{job.job_id}' scheduled on-prem successfully.")
+                else:
+                    if self.resource_manager.can_schedule_job_on_cloud(job):
+                        self.resource_manager.allocate_resources_on_cloud(job)
+                        job.start(self.current_time, where="cloud")
+                        print(f"Job '{job.job_id}' scheduled on cloud successfully.")
                     else:
                         print(f"Job '{job.job_id}' cannot be scheduled at this moment due to resource constraints.")
+                
+            elif job.status == 'pending':
+                if self.resource_manager.can_schedule_job(job):
+                    self.resource_manager.allocate_resources(job)
+                    job.start(self.current_time)
+                    print(f"Job '{job.job_id}' scheduled on-prem successfully.")
+                else:
+                    print(f"Job '{job.job_id}' cannot be scheduled at this moment due to resource constraints.")
+            
             elif job.status == 'running':
                 if self.current_time >= job.start_time + job.duration:
                     job.complete(self.current_time)
@@ -62,8 +75,10 @@ class Scheduler:
                     print(f"Job '{job.job_id}' completed at time {self.current_time}.")
                 else:
                     print(f"Job '{job.job_id}' is still running.")
+            
             elif job.status == 'completed':
                 print(f"Job '{job.job_id}' is already completed at time {job.end_time}.")
+            
             else:
                 print(f"Job '{job.job_id}' has an unknown status: {job.status}")
                 
