@@ -1,0 +1,227 @@
+Starting EDA Job Scheduling Simulation...
+ResourceManager initialized with config: {'resources': {'on_prem': {'total_cpu_cores': 64, 'max_jobs_on_prem': 10}, 'cloud': {'provider': 'AWS', 'max_cpu_cores': 128, 'cost_per_cpu_minute': 0.2}, 'job_limits': {'max_runtime': 7200, 'max_cpu_per_job': 16, 'max_parallel_jobs': 5}, 'global_settings': {'time_quantum': 5}, 'license_limits': {'synopsys_dc': 10, 'cadence_innovus': 5}}}
+Resources: {'on_prem': {'total_cores': 64, 'available_cores': 64, 'max_jobs': 10}, 'cloud': {'provider': 'AWS', 'max_cores': 128, 'available_cores': 128, 'cost_per_cpu_minute': 0.2}}
+Licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+Loaded workflow 'test_case_01' with 3 jobs.
+Loaded job: Job(job_id=job_001, submit_time=5, cpu_cores=4, duration=30, deadline=600, license=[License(name=synopsys_dc, count=1), License(name=cadence_innovus, count=1)], start_time=None, end_time=None, status=pending)
+Loaded job: Job(job_id=job_003, submit_time=10, cpu_cores=2, duration=100, deadline=200, license=[License(name=synopsys_dc, count=2)], start_time=None, end_time=None, status=pending)
+Loaded job: Job(job_id=job_002, submit_time=20, cpu_cores=62, duration=100, deadline=800, license=[License(name=synopsys_dc, count=2)], start_time=None, end_time=None, status=pending)
+
+--- Simulation Time: 5 ---
+Job 'job_001' added to the queue.
+Job 'job_001' submitted to scheduler at time 5.
+Current job queue length: 2
+Available CPU cores: 64
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+Job 'job_001' scheduled successfully.
+
+--- Simulation Time: 10 ---
+Job 'job_003' added to the queue.
+Job 'job_003' submitted to scheduler at time 10.
+Current job queue length: 1
+Available CPU cores: 60
+Available licenses: {'synopsys_dc': 9, 'cadence_innovus': 4}
+Job 'job_001' is still running.
+Job 'job_003' scheduled successfully.
+
+--- Simulation Time: 15 ---
+Current job queue length: 1
+Available CPU cores: 58
+Available licenses: {'synopsys_dc': 7, 'cadence_innovus': 4}
+Job 'job_001' is still running.
+Job 'job_003' is still running.
+
+--- Simulation Time: 20 ---
+Job 'job_002' added to the queue.
+Job 'job_002' submitted to scheduler at time 20.
+Current job queue length: 0
+Available CPU cores: 58
+Available licenses: {'synopsys_dc': 7, 'cadence_innovus': 4}
+Job 'job_001' is still running.
+Job 'job_003' is still running.
+Job 'job_002' cannot be scheduled at this moment due to resource constraints.
+
+--- Simulation Time: 25 ---
+Current job queue length: 0
+Available CPU cores: 58
+Available licenses: {'synopsys_dc': 7, 'cadence_innovus': 4}
+Job 'job_001' is still running.
+Job 'job_003' is still running.
+Job 'job_002' cannot be scheduled at this moment due to resource constraints.
+
+--- Simulation Time: 30 ---
+Current job queue length: 0
+Available CPU cores: 58
+Available licenses: {'synopsys_dc': 7, 'cadence_innovus': 4}
+Job 'job_001' is still running.
+Job 'job_003' is still running.
+Job 'job_002' cannot be scheduled at this moment due to resource constraints.
+
+--- Simulation Time: 35 ---
+Current job queue length: 0
+Available CPU cores: 58
+Available licenses: {'synopsys_dc': 7, 'cadence_innovus': 4}
+Job 'job_001' completed at time 35.
+Job 'job_003' is still running.
+Job 'job_002' scheduled successfully.
+
+--- Simulation Time: 40 ---
+Current job queue length: 0
+Available CPU cores: 0
+Available licenses: {'synopsys_dc': 6, 'cadence_innovus': 5}
+Job 'job_001' is already completed at time 35.
+Job 'job_003' is still running.
+Job 'job_002' is still running.
+
+--- Simulation Time: 45 ---
+Current job queue length: 0
+Available CPU cores: 0
+Available licenses: {'synopsys_dc': 6, 'cadence_innovus': 5}
+Job 'job_001' is already completed at time 35.
+Job 'job_003' is still running.
+Job 'job_002' is still running.
+
+--- Simulation Time: 50 ---
+Current job queue length: 0
+Available CPU cores: 0
+Available licenses: {'synopsys_dc': 6, 'cadence_innovus': 5}
+Job 'job_001' is already completed at time 35.
+Job 'job_003' is still running.
+Job 'job_002' is still running.
+
+--- Simulation Time: 55 ---
+Current job queue length: 0
+Available CPU cores: 0
+Available licenses: {'synopsys_dc': 6, 'cadence_innovus': 5}
+Job 'job_001' is already completed at time 35.
+Job 'job_003' is still running.
+Job 'job_002' is still running.
+
+--- Simulation Time: 60 ---
+Current job queue length: 0
+Available CPU cores: 0
+Available licenses: {'synopsys_dc': 6, 'cadence_innovus': 5}
+Job 'job_001' is already completed at time 35.
+Job 'job_003' is still running.
+Job 'job_002' is still running.
+
+--- Simulation Time: 65 ---
+Current job queue length: 0
+Available CPU cores: 0
+Available licenses: {'synopsys_dc': 6, 'cadence_innovus': 5}
+Job 'job_001' is already completed at time 35.
+Job 'job_003' is still running.
+Job 'job_002' is still running.
+
+--- Simulation Time: 70 ---
+Current job queue length: 0
+Available CPU cores: 0
+Available licenses: {'synopsys_dc': 6, 'cadence_innovus': 5}
+Job 'job_001' is already completed at time 35.
+Job 'job_003' is still running.
+Job 'job_002' is still running.
+
+--- Simulation Time: 75 ---
+Current job queue length: 0
+Available CPU cores: 0
+Available licenses: {'synopsys_dc': 6, 'cadence_innovus': 5}
+Job 'job_001' is already completed at time 35.
+Job 'job_003' is still running.
+Job 'job_002' is still running.
+
+--- Simulation Time: 80 ---
+Current job queue length: 0
+Available CPU cores: 0
+Available licenses: {'synopsys_dc': 6, 'cadence_innovus': 5}
+Job 'job_001' is already completed at time 35.
+Job 'job_003' is still running.
+Job 'job_002' is still running.
+
+--- Simulation Time: 85 ---
+Current job queue length: 0
+Available CPU cores: 0
+Available licenses: {'synopsys_dc': 6, 'cadence_innovus': 5}
+Job 'job_001' is already completed at time 35.
+Job 'job_003' is still running.
+Job 'job_002' is still running.
+
+--- Simulation Time: 90 ---
+Current job queue length: 0
+Available CPU cores: 0
+Available licenses: {'synopsys_dc': 6, 'cadence_innovus': 5}
+Job 'job_001' is already completed at time 35.
+Job 'job_003' is still running.
+Job 'job_002' is still running.
+
+--- Simulation Time: 95 ---
+Current job queue length: 0
+Available CPU cores: 0
+Available licenses: {'synopsys_dc': 6, 'cadence_innovus': 5}
+Job 'job_001' is already completed at time 35.
+Job 'job_003' is still running.
+Job 'job_002' is still running.
+
+--- Simulation Time: 100 ---
+Current job queue length: 0
+Available CPU cores: 0
+Available licenses: {'synopsys_dc': 6, 'cadence_innovus': 5}
+Job 'job_001' is already completed at time 35.
+Job 'job_003' is still running.
+Job 'job_002' is still running.
+
+--- Simulation Time: 105 ---
+Current job queue length: 0
+Available CPU cores: 0
+Available licenses: {'synopsys_dc': 6, 'cadence_innovus': 5}
+Job 'job_001' is already completed at time 35.
+Job 'job_003' is still running.
+Job 'job_002' is still running.
+
+--- Simulation Time: 110 ---
+Current job queue length: 0
+Available CPU cores: 0
+Available licenses: {'synopsys_dc': 6, 'cadence_innovus': 5}
+Job 'job_001' is already completed at time 35.
+Job 'job_003' completed at time 110.
+Job 'job_002' is still running.
+
+--- Simulation Time: 115 ---
+Current job queue length: 0
+Available CPU cores: 2
+Available licenses: {'synopsys_dc': 8, 'cadence_innovus': 5}
+Job 'job_001' is already completed at time 35.
+Job 'job_003' is already completed at time 110.
+Job 'job_002' is still running.
+
+--- Simulation Time: 120 ---
+Current job queue length: 0
+Available CPU cores: 2
+Available licenses: {'synopsys_dc': 8, 'cadence_innovus': 5}
+Job 'job_001' is already completed at time 35.
+Job 'job_003' is already completed at time 110.
+Job 'job_002' is still running.
+
+--- Simulation Time: 125 ---
+Current job queue length: 0
+Available CPU cores: 2
+Available licenses: {'synopsys_dc': 8, 'cadence_innovus': 5}
+Job 'job_001' is already completed at time 35.
+Job 'job_003' is already completed at time 110.
+Job 'job_002' is still running.
+
+--- Simulation Time: 130 ---
+Current job queue length: 0
+Available CPU cores: 2
+Available licenses: {'synopsys_dc': 8, 'cadence_innovus': 5}
+Job 'job_001' is already completed at time 35.
+Job 'job_003' is already completed at time 110.
+Job 'job_002' is still running.
+
+--- Simulation Time: 135 ---
+Current job queue length: 0
+Available CPU cores: 2
+Available licenses: {'synopsys_dc': 8, 'cadence_innovus': 5}
+Job 'job_001' is already completed at time 35.
+Job 'job_003' is already completed at time 110.
+Job 'job_002' completed at time 135.
+Simulation completed.

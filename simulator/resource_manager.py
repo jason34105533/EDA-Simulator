@@ -1,6 +1,9 @@
 import yaml
 import os
 
+from simulator.job import Job
+from simulator.license import License
+
 class ResourceManager:
     def __init__(self, config):
         
@@ -47,32 +50,28 @@ class ResourceManager:
         print(f"Resources: {self.resources}")
         print(f"Licenses: {self.licenses}")
         
-        
 
     def get_available_cores(self):
         """
-        Returns the number of available CPU cores for a job.
+        Returns the number of available CPU cores for a job on prem.
         """
-        return sum(resource['available_cores'] for resource in self.resources.values())
+        return self.resources['on_prem']['available_cores']
     
     def allocate_cores(self, required_cores):
         """
         Allocates CPU cores for a job if available.
         Returns True if allocation is successful, False otherwise.
         """
-        for resource in self.resources.values():
-            if resource['available_cores'] >= required_cores:
-                resource['available_cores'] -= required_cores
-                return True
+        if self.resources['on_prem']['available_cores'] >= required_cores:
+            self.resources['on_prem']['available_cores'] -= required_cores
+            return True
         return False
     
     def release_cores(self, cores):
         """
         Releases allocated CPU cores back to the resource pool.
         """
-        for resource in self.resources.values():
-            resource['available_cores'] += cores
-            return
+        self.resources['on_prem']['available_cores'] += cores
     
     def get_available_licenses(self, job_license):
         """
@@ -98,7 +97,58 @@ class ResourceManager:
             self.licenses[job_license] += number_of_license
         else:
             self.licenses[job_license] = number_of_license
+            
+    def can_schedule_job(self, job: Job):
+        """
+        Check if a job can be scheduled based on available CPU cores and licenses.
         
+        :param job: The job to be checked.
+        :return: True if the job can be scheduled, False otherwise.
+        """
+        # Check CPU core availability
+        if self.get_available_cores() < job.cpu_cores:
+            return False
+        
+        # Check license availability
+        for license in job.license:
+            if self.get_available_licenses(license.license_name) < license.license_count:
+                return False
+        
+        return True
+    
+    def allocate_resources(self, job):
+        """
+        Allocate resources (CPU cores and licenses) for a job.
+        
+        :param job: The job for which resources are to be allocated.
+        :return: True if resources are successfully allocated, False otherwise.
+        """
+        # Allocate CPU cores
+        if not self.allocate_cores(job.cpu_cores):
+            return False
+        
+        # Allocate licenses
+        for license in job.license:
+            if not self.allocate_license(license.license_name, license.license_count):
+                # If license allocation fails, release previously allocated cores
+                self.release_cores(job.cpu_cores)
+                return False
+        
+        return True
+        
+    def release_resources(self, job):
+        """
+        Release resources (CPU cores and licenses) allocated to a job.
+        :param job: The job for which resources are to be released.
+        """
+        # Release CPU cores
+        self.release_cores(job.cpu_cores)
+        
+        # Release licenses
+        for license in job.license:
+            self.release_license(license.license_name, license.license_count)
+            
+    
         
 
 

@@ -2,6 +2,7 @@ import heapq
 import yaml
 from simulator.job import Job
 from simulator.license import License
+from simulator.scheduler import Scheduler
 
 class JobSubmitter:
     def __init__(self, workflow_path, scheduler):
@@ -12,14 +13,14 @@ class JobSubmitter:
         :param scheduler: The scheduler to manage job execution.
         """
         self.job_queue = self._load_workflow_from_file(workflow_path)
-        heapq.heapify(self.job_queue)  # Ensure it's a valid heap
+        # sort jobs by submit_time and job_id for deterministic processing order
+        self.job_queue.sort()
         
-        self.scheduler = scheduler
+        self.scheduler: Scheduler = scheduler
         
         # print loaded jobs for verification
-        # while self.job_queue:
-        #     job = heapq.heappop(self.job_queue)
-        #     print(f"Loaded job: {job}")
+        for job in self.job_queue:
+            print(f"Loaded job: {job}")
         
         self.current_time = 0
         
@@ -65,7 +66,7 @@ class JobSubmitter:
     def set_current_time(self, time):
         """Set the current simulation time."""
         self.current_time = time
-        print(f"Current simulation time set to {self.current_time}.")    
+        # print(f"Current simulation time set to {self.current_time}.")    
     
     def submit_job(self, job):
         """Submit a job to the job queue."""
@@ -73,25 +74,16 @@ class JobSubmitter:
         print(f"Job '{job}' submitted successfully.")
         
     def submit_jobs(self):
-        """Submit all jobs in the workflow to the scheduler."""
-        for job in self.workflow:
-            if job['job_id'] not in self.job_queue:
-                self.job_queue[job['job_id']] = job
-                self.submit_job(job)
-                self.scheduler.add_job(job)
-            else:
-                print(f"Job '{job['job_id']}' is already in the queue.")
-        
-        
-    def load_workflow(self, workflow):
-        """Load a new workflow."""
-        self.workflow = workflow
-        print(f"Workflow '{workflow}' loaded successfully.")
+        """Submit all jobs whose submit_time <= current_time to the scheduler."""
+        while self.job_queue and self.job_queue[0].submit_time <= self.current_time:
+            job = self.job_queue.pop(0)
+            self.scheduler.add_job(job)
+            print(f"Job '{job.job_id}' submitted to scheduler at time {self.current_time}.")
+
+        print(f"Current job queue length: {len(self.job_queue)}")
         
     def all_jobs_completed(self):
-        """Check if all jobs in the workflow are completed."""
-        for job in self.workflow:
-            if not job.is_completed():
-                return False
-        return True
+        """Check if all jobs are completed."""
+        return len(self.job_queue) == 0
+        
         

@@ -36,12 +36,13 @@ class Job:
         self.status = "completed"
         
     def is_completed(self):
-        return self.status == "completed"
+        return self.status == "completed" or self.status == "missed_deadline"
+    
+    
         
-    def is_missed_deadline(self, current_time):
-        if self.end_time is None:
-            return False
-        return self.end_time > self.deadline
+    def update_status(self, current_time):
+        if ((self.status == "pending") and current_time > self.deadline):
+            self.status = "missed_deadline"
         
     def __repr__(self):
         return (f"Job(job_id={self.job_id}, submit_time={self.submit_time}, "
