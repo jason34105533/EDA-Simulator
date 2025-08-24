@@ -5,11 +5,26 @@ jobs:
     cpu_cores: 4
     duration: 300            # how long it runs (sec)
     deadline: 600
-    license: "synopsys_dc"
+    license: 
+    - license_name: synopsys_dc
+      license_count: 1
+    - license_name: cadence_innovus
+      license_count: 1
   
   - job_id: job_002
     submit_time: 20
     cpu_cores: 2
     duration: 100
     deadline: 200
-    license: "cadence_innovus"
+    license:
+    - license_name: synopsys_dc
+      license_count: 2
+
+  - job_id: job_003
+    submit_time: 5
+    cpu_cores: 2
+    duration: 100
+    deadline: 200
+    license:
+    - license_name: synopsys_dc
+      license_count: 2

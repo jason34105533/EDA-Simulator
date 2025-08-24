@@ -26,3 +26,7 @@ eda-simulator/
 │
 └── main.py                   # Entry point
 ```
+
+Testing Environment:
+- Python 3.13.2
+- PyYAML 6.0.2 (for YAML parsing)

@@ -1,16 +1,12 @@
 resources:
   on_prem:
     total_cpu_cores: 64            # Total CPU cores available on-prem
-    available_licenses:
-      synopsys_dc: 10              # Number of licenses for synopsys_dc tool
-      cadence_innovus: 5           # Number of licenses for cadence_innovus tool
     max_jobs_on_prem: 10           # Max number of jobs that can be scheduled on-prem
 
   cloud:
     provider: "AWS"                # Or "Azure", "GoogleCloud", etc.
     max_cpu_cores: 128             # Total CPU cores available in the cloud (elastic)
     cost_per_cpu_minute: 0.2       # Cost per CPU minute in cloud, could be dynamic
-    scaling_factor: 2              # Cloud can scale up by this factor (e.g. 2x)
 
   job_limits:
     max_runtime: 7200              # Max runtime for any job (seconds) across both on-prem/cloud
@@ -18,6 +14,9 @@ resources:
     max_parallel_jobs: 5           # Max number of parallel jobs (in the same cluster)
 
   global_settings:
-    time_quantum: 60               # Time resolution for the scheduler (in seconds)
-    logging_enabled: true          # Enable logging for job processing
+    time_quantum: 5                # Time resolution for the scheduler (in seconds)
+
+  license_limits:
+    synopsys_dc: 10                # Number of licenses for synopsys_dc tool
+    cadence_innovus: 5             # Number of licenses for cadence_innovus tool
 
