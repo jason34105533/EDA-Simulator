@@ -82,8 +82,8 @@ class JobSubmitter:
 
         print(f"Current job queue length: {len(self.job_queue)}")
         
-    def all_jobs_completed(self):
-        """Check if all jobs are completed."""
+    def all_jobs_submitted(self):
+        """Check if all jobs are submitted."""
         return len(self.job_queue) == 0
         
         

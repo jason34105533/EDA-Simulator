@@ -38,7 +38,7 @@ if __name__ == "__main__":
     
     # stop_simulation()
     # Simulate time passage and check for deadlines
-    while not (scheduler.all_jobs_completed() and job_submitter.all_jobs_completed()):
+    while not (scheduler.all_jobs_completed() and job_submitter.all_jobs_submitted()):
         # Increment time by the time quantum
         time += TIME_QUANTUM
         print(f"\n--- Simulation Time: {time} ---")
