@@ -29,7 +29,7 @@ if __name__ == "__main__":
     scheduler = Scheduler(resource_manager)
     
     # Instantiate JobSubmitter and load workflow
-    job_submitter = JobSubmitter('workflow/workflow_1.yaml', scheduler)
+    job_submitter = JobSubmitter('workflow/advanced_workflow_1.yaml', scheduler)
 
     
     time = 0  # Initialize simulation time

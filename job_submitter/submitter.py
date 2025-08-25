@@ -1,8 +1,10 @@
 import heapq
 import yaml
 from simulator.job import Job
+from simulator.task import Task
 from simulator.license import License
 from simulator.scheduler import Scheduler
+
 
 class JobSubmitter:
     def __init__(self, workflow_path, scheduler):
@@ -20,7 +22,8 @@ class JobSubmitter:
         
         # print loaded jobs for verification
         for job in self.job_queue:
-            print(f"Loaded job: {job}")
+            print(f"Loaded job: {job}")  #[Log]
+            pass
         
         self.current_time = 0
         
@@ -32,27 +35,54 @@ class JobSubmitter:
             
             jobs: list[Job] = []
             for job_data in workflow_data.get('jobs', []):
-                # Parse licenses
-                licenses: list[License] = []
-                for license_data in job_data.get('license', []):
-                    license = License(
-                        license_name=license_data['license_name'],
-                        license_count=license_data['license_count']
+                tasks: list[Task] = []
+                for task_data in job_data.get('tasks', []):
+                    
+                    # Parse licenses
+                    licenses: list[License] = []
+                    for license_data in task_data.get('licenses', []):
+                        license = License(
+                            license_name=license_data['license_name'],
+                            license_count=license_data['license_count']
+                        )
+                        licenses.append(license)
+                        
+                    task = Task(
+                        task_id=task_data['task_id'],
+                        cpu_cores=task_data['cpu_cores'],
+                        duration=task_data['duration'],
+                        license=licenses,
+                        depends_on=task_data.get('depends_on', [])
                     )
-                    licenses.append(license)
+                    tasks.append(task)
+                    
+                # Aggregate licenses for the job from its tasks
+                license_dict = {}
+                for task in tasks:
+                    for lic in task.license:
+                        if lic.license_name in license_dict:
+                            license_dict[lic.license_name] += lic.license_count
+                        else:
+                            license_dict[lic.license_name] = lic.license_count
+                licenses = [License(name, count) for name, count in license_dict.items()]
+                
                 
                 # Create Job object
                 job = Job(
                     job_id=job_data['job_id'],
                     submit_time=job_data['submit_time'],
-                    cpu_cores=job_data['cpu_cores'],
-                    duration=job_data['duration'],
+                    cpu_cores=40,
                     deadline=job_data['deadline'],
-                    license=licenses
+                    license=licenses,
+                    tasks=tasks
                 )
                 jobs.append(job)
+                
+
+            for job in jobs:
+                print(f"Loaded job: {job.job_id} with submit time {job.submit_time} and deadline {job.deadline}.")  #[Log]
             
-            print(f"Loaded workflow '{workflow_data.get('workflow_name', 'Unknown')}' with {len(jobs)} jobs.")
+            print(f"Loaded workflow '{workflow_data.get('workflow_name', 'Unknown')}' with {len(jobs)} jobs.")  #[Log]
             return jobs
                 
         except FileNotFoundError:
@@ -66,12 +96,6 @@ class JobSubmitter:
     def set_current_time(self, time):
         """Set the current simulation time."""
         self.current_time = time
-        # print(f"Current simulation time set to {self.current_time}.")    
-    
-    def submit_job(self, job):
-        """Submit a job to the job queue."""
-        
-        print(f"Job '{job}' submitted successfully.")
         
     def submit_jobs(self):
         """Submit all jobs whose submit_time <= current_time to the scheduler."""
@@ -80,7 +104,7 @@ class JobSubmitter:
             self.scheduler.add_job(job)
             print(f"Job '{job.job_id}' submitted to scheduler at time {self.current_time}.")
 
-        print(f"Current job queue length: {len(self.job_queue)}")
+        # print(f"Current job queue length: {len(self.job_queue)}")   #[Log]
         
     def all_jobs_submitted(self):
         """Check if all jobs are submitted."""

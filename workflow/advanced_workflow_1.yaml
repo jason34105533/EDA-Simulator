@@ -7,7 +7,7 @@ jobs:
       - task_id: task_001_a
         cpu_cores: 2
         duration: 10
-        license:
+        licenses:
           - license_name: synopsys_dc
             license_count: 1
         depends_on: []   # no dependencies (entry task)
@@ -15,7 +15,7 @@ jobs:
       - task_id: task_001_b
         cpu_cores: 1
         duration: 20
-        license:
+        licenses:
           - license_name: cadence_innovus
             license_count: 1
         depends_on: [task_001_a]
@@ -23,13 +23,13 @@ jobs:
       - task_id: task_001_c
         cpu_cores: 1
         duration: 15
-        license: []
+        licenses: []
         depends_on: [task_001_a]
 
       - task_id: task_001_d
         cpu_cores: 4
         duration: 30
-        license: []
+        licenses: []
         depends_on: [task_001_b, task_001_c]  # merge point
 
   - job_id: job_002
@@ -39,17 +39,17 @@ jobs:
       - task_id: task_002_a
         cpu_cores: 40
         duration: 5
-        license:
+        licenses:
           - license_name: synopsys_dc
             license_count: 5
         depends_on: []
 
       - task_id: task_002_b
-        cpu_cores: 42
+        cpu_cores: 40
         duration: 5
-        license:
+        licenses:
           - license_name: synopsys_dc
-            license_count: 5
+            license_count: 4
         depends_on: [task_002_a]
 
   - job_id: job_003
@@ -59,7 +59,7 @@ jobs:
       - task_id: task_003_a
         cpu_cores: 2
         duration: 50
-        license:
+        licenses:
           - license_name: synopsys_dc
             license_count: 1
         depends_on: []
@@ -67,7 +67,7 @@ jobs:
       - task_id: task_003_b
         cpu_cores: 2
         duration: 50
-        license:
+        licenses:
           - license_name: synopsys_dc
             license_count: 1
         depends_on: [task_003_a]

@@ -39,27 +39,30 @@ class Scheduler:
         based on the availability of CPU cores and licenses.
         """
         # print available resources
-        print(f"Available CPU cores: {self.resource_manager.get_available_cores()}")
-        print(f"Available licenses: {self.resource_manager.licenses}")
+        print(f"Available CPU cores: {self.resource_manager.get_available_cores()}")  #[Log]
+        print(f"Available licenses: {self.resource_manager.licenses}\n")  #[Log]
+        
         for job in self.job_queue:
             
             job.update_status(self.current_time)
             
             if job.status == 'missed_deadline':  
                 # Just on time is also considered as missed, to force using cloud resources to avoid failed
-                print(f"Job '{job.job_id}' is missing its deadline.")
+                # print(f"Job '{job.job_id}' is missing its deadline.")  #[Log]
                 ret = self.resource_manager.can_schedule_job(job)
                 if ret == 0:
                     self.resource_manager.allocate_resources(job)
                     job.start(self.current_time)
                     print(f"Job '{job.job_id}' scheduled on-prem cluster {job.run_cluster} successfully.")
+                    job.run(self.current_time)
                 else:
                     if self.resource_manager.can_schedule_job_on_cloud(job) == 0:
                         self.resource_manager.allocate_resources_on_cloud(job)
                         job.start(self.current_time, where="cloud")
                         print(f"Job '{job.job_id}' scheduled on cloud successfully.")
+                        job.run(self.current_time)
                     else:
-                        print(f"Job '{job.job_id}' cannot be scheduled at this moment due to insufficient licenses")
+                        print(f"Job '{job.job_id}' cannot be scheduled due to insufficient licenses: {job.license}")
                 
             elif job.status == 'pending':
                 ret = self.resource_manager.can_schedule_job(job)
@@ -67,22 +70,28 @@ class Scheduler:
                     self.resource_manager.allocate_resources(job)
                     job.start(self.current_time)
                     print(f"Job '{job.job_id}' scheduled on-prem cluster {job.run_cluster} successfully.")
+                    job.run(self.current_time)
                 else:
                     if ret == 1:
-                        print(f"Job '{job.job_id}' cannot be scheduled at this moment due to insufficient CPU cores on-prem.")
+                        print(f"Job '{job.job_id}' cannot be scheduled due to insufficient CPU cores on-prem.")
                     else :  # ret == 2
-                        print(f"Job '{job.job_id}' cannot be scheduled at this moment due to insufficient licenses")
+                        print(f"Job '{job.job_id}' cannot be scheduled due to insufficient licenses: {job.license}")
             
             elif job.status == 'running':
-                if self.current_time >= job.start_time + job.duration:
+                
+                job.run(self.current_time)
+                
+                if job.all_completed():
                     job.complete(self.current_time)
                     self.resource_manager.release_resources(job)
                     print(f"Job '{job.job_id}' completed at time {self.current_time}.")
                 else:
-                    print(f"Job '{job.job_id}' is still running.")
+                    # print(f"Job '{job.job_id}' is still running.")  #[Log]
+                    pass
             
             elif job.status == 'completed':
-                print(f"Job '{job.job_id}' is already completed at time {job.end_time}.")
+                # print(f"Job '{job.job_id}' is already completed at time {job.end_time}.")  #[Log]
+                pass
             
             else:
                 print(f"Job '{job.job_id}' has an unknown status: {job.status}")
