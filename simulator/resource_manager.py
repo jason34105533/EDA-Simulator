@@ -39,8 +39,7 @@ class ResourceManager:
             if 'cloud' in resources_config:
                 self.resources['cloud'] = {
                     'provider': resources_config['cloud'].get('provider', ''),
-                    'max_cores': resources_config['cloud'].get('max_cpu_cores', 0),
-                    'available_cores': resources_config['cloud'].get('max_cpu_cores', 0),
+                    'available_cores': resources_config['cloud'].get('available_cores', 0),
                     'cost_per_cpu_minute': resources_config['cloud'].get('cost_per_cpu_minute', 0.0)
                 }
             
@@ -135,6 +134,8 @@ class ResourceManager:
         :param job: The job to be checked.
         :return: 0 if the job can be scheduled, 1 if insufficient CPU cores, 2 if insufficient licenses.
         """
+        print(self.resources['cloud']['available_cores'], job.cpu_cores)
+         # Check CPU cores
         if self.resources['cloud']['available_cores'] >= job.cpu_cores:
             for license in job.license:
                 if self.get_available_licenses(license.license_name) < license.license_count:
@@ -142,7 +143,7 @@ class ResourceManager:
             return 0  # 'Can schedule'
         return 1  # 'Insufficient CPU cores'
     
-    def allocate_resources_on_cloud(self, job):
+    def allocate_resources_on_cloud(self, job: Job) -> bool:
         """
         Allocate resources (CPU cores and licenses) for a job on cloud.
         

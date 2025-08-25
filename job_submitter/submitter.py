@@ -66,12 +66,43 @@ class JobSubmitter:
                             license_dict[lic.license_name] = lic.license_count
                 licenses = [License(name, count) for name, count in license_dict.items()]
                 
+                NUM_CPU_CORES = 40  # Default CPU cores per job
+                # Estimate total maximum CPU cores for a job by  sum up the cpus of each tasks at the same topological level
+                if tasks:
+                    max_parallel_tasks = 0
+                    task_levels = {}
+                    
+                    def get_task_level(task_id, visited):
+                        if task_id in visited:
+                            return 0
+                        visited.add(task_id)
+                        task = next((t for t in tasks if t.task_id == task_id), None)
+                        if not task or not task.depends_on:
+                            return 0
+                        level = 0
+                        for dep in task.depends_on:
+                            level = max(level, get_task_level(dep, visited) + 1)
+                        return level    
+                    
+                    for task in tasks:
+                        level = get_task_level(task.task_id, set())
+                        if level in task_levels:
+                            task_levels[level].append(task)
+                        else:
+                            task_levels[level] = [task]
+                    max_parallel_tasks = max(max_parallel_tasks, max(task_levels.keys(), default=0))
+                    for level, level_tasks in task_levels.items():
+                        total_cpu = sum(t.cpu_cores for t in level_tasks)
+                        max_parallel_tasks = max(max_parallel_tasks, total_cpu)
+                    NUM_CPU_CORES = max_parallel_tasks
+                    
+                print(f"Estimated CPU cores for job {job_data['job_id']}: {NUM_CPU_CORES} based on max parallel tasks: {max_parallel_tasks}.")  #[Log]
                 
                 # Create Job object
                 job = Job(
                     job_id=job_data['job_id'],
                     submit_time=job_data['submit_time'],
-                    cpu_cores=40,
+                    cpu_cores=NUM_CPU_CORES,
                     deadline=job_data['deadline'],
                     license=licenses,
                     tasks=tasks

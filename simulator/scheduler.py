@@ -57,13 +57,17 @@ class Scheduler:
                     print(f"Job '{job.job_id}' scheduled on-prem cluster {job.run_cluster} successfully.")
                     job.run(self.current_time, scheduler=self, TwoPhase=self.TwoPhase)
                 else:
-                    if self.resource_manager.can_schedule_job_on_cloud(job) == 0:
+                    ret = self.resource_manager.can_schedule_job_on_cloud(job)
+                    if ret == 0:
                         self.resource_manager.allocate_resources_on_cloud(job)
                         job.start(self.current_time, where="cloud")
                         print(f"Job '{job.job_id}' scheduled on cloud successfully.")
                         job.run(self.current_time, scheduler=self, TwoPhase=self.TwoPhase)
                     else:
-                        print(f"Job '{job.job_id}' cannot be scheduled due to insufficient licenses: {job.license}")
+                        if ret == 1:
+                            print(f"Job '{job.job_id}' cannot be scheduled due to insufficient CPU cores on cloud.")  #[Log]
+                        else:
+                            print(f"Job '{job.job_id}' cannot be scheduled due to insufficient licenses: {job.license}")  #[Log]
                 
             elif job.status == 'pending':
                 ret = self.resource_manager.can_schedule_job(job)

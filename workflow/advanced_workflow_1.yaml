@@ -2,7 +2,7 @@ workflow_name: "test_case_02"
 jobs:
   - job_id: job_001
     submit_time: 5
-    deadline: 600
+    deadline: 200
     tasks:
       - task_id: task_001_a
         cpu_cores: 2
@@ -13,7 +13,7 @@ jobs:
         depends_on: []   # no dependencies (entry task)
 
       - task_id: task_001_b
-        cpu_cores: 1
+        cpu_cores: 2
         duration: 20
         licenses:
           - license_name: cadence_innovus
@@ -21,7 +21,7 @@ jobs:
         depends_on: [task_001_a]
 
       - task_id: task_001_c
-        cpu_cores: 1
+        cpu_cores: 10
         duration: 15
         licenses: []
         depends_on: [task_001_a]
@@ -37,7 +37,7 @@ jobs:
     deadline: 25
     tasks:
       - task_id: task_002_a
-        cpu_cores: 40
+        cpu_cores: 7
         duration: 5
         licenses:
           - license_name: synopsys_dc
@@ -45,7 +45,7 @@ jobs:
         depends_on: []
 
       - task_id: task_002_b
-        cpu_cores: 40
+        cpu_cores: 2
         duration: 5
         licenses:
           - license_name: synopsys_dc

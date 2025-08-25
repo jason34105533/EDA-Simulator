@@ -1,6 +1,6 @@
 resources:
   on_prem:
-    cpu_cores_per_node: 64         # CPU cores available per on-prem node
+    cpu_cores_per_node: 1         # CPU cores available per on-prem node
     nodes_per_cluster: 8           # Total number of on-prem nodes
     max_jobs_on_prem: 10           # Max number of jobs that can be scheduled on-prem
     number_of_clusters: 4          # Number of physical clusters in the on-prem cluster

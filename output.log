@@ -1,161 +1,361 @@
 Starting EDA Job Scheduling Simulation...
-ResourceManager initialized with config: {'resources': {'on_prem': {'cpu_cores_per_node': 64, 'nodes_per_cluster': 8, 'max_jobs_on_prem': 10, 'number_of_clusters': 4}, 'cloud': {'provider': 'AWS', 'available_cores': 128, 'cost_per_cpu_minute': 0.2}, 'job_limits': {'max_runtime': 7200, 'max_cpu_per_job': 16, 'max_parallel_jobs': 5}, 'global_settings': {'time_quantum': 5}, 'license_limits': {'synopsys_dc': 10, 'cadence_innovus': 5}}}
-Resources: {'on_prem': {'cores_per_cluster': 512, 'clusters': [512, 512, 512, 512], 'max_jobs': 10}, 'cloud': {'provider': 'AWS', 'max_cores': 0, 'available_cores': 0, 'cost_per_cpu_minute': 0.2}}
+ResourceManager initialized with config: {'resources': {'on_prem': {'cpu_cores_per_node': 1, 'nodes_per_cluster': 8, 'max_jobs_on_prem': 10, 'number_of_clusters': 4}, 'cloud': {'provider': 'AWS', 'available_cores': 128, 'cost_per_cpu_minute': 0.2}, 'job_limits': {'max_runtime': 7200, 'max_cpu_per_job': 16, 'max_parallel_jobs': 5}, 'global_settings': {'time_quantum': 5}, 'license_limits': {'synopsys_dc': 10, 'cadence_innovus': 5}}}
+Resources: {'on_prem': {'cores_per_cluster': 8, 'clusters': [8, 8, 8, 8], 'max_jobs': 10}, 'cloud': {'provider': 'AWS', 'available_cores': 128, 'cost_per_cpu_minute': 0.2}}
 Licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
-Loaded job: job_001 with submit time 5 and deadline 600.
+Estimated CPU cores for job job_001: 12 based on max parallel tasks: 12.
+Estimated CPU cores for job job_002: 7 based on max parallel tasks: 7.
+Estimated CPU cores for job job_003: 2 based on max parallel tasks: 2.
+Loaded job: job_001 with submit time 5 and deadline 200.
 Loaded job: job_002 with submit time 20 and deadline 25.
 Loaded job: job_003 with submit time 10 and deadline 200.
 Loaded workflow 'test_case_02' with 3 jobs.
-Loaded job: Job(job_id=job_001, submit_time=5, cpu_cores=40, deadline=600, license=[License(name=synopsys_dc, count=1), License(name=cadence_innovus, count=1)], start_time=None, end_time=None, status=pending)
-Loaded job: Job(job_id=job_003, submit_time=10, cpu_cores=40, deadline=200, license=[License(name=synopsys_dc, count=2)], start_time=None, end_time=None, status=pending)
-Loaded job: Job(job_id=job_002, submit_time=20, cpu_cores=40, deadline=25, license=[License(name=synopsys_dc, count=9)], start_time=None, end_time=None, status=pending)
+Loaded job: Job(job_id=job_001, submit_time=5, cpu_cores=12, deadline=200, license=[License(name=synopsys_dc, count=1), License(name=cadence_innovus, count=1)], start_time=None, end_time=None, status=pending)
+Loaded job: Job(job_id=job_003, submit_time=10, cpu_cores=2, deadline=200, license=[License(name=synopsys_dc, count=2)], start_time=None, end_time=None, status=pending)
+Loaded job: Job(job_id=job_002, submit_time=20, cpu_cores=7, deadline=25, license=[License(name=synopsys_dc, count=9)], start_time=None, end_time=None, status=pending)
 
 --- Simulation Time: 5 ---
 Job 'job_001' submitted to scheduler at time 5.
-Available CPU cores: [512, 512, 512, 512]
+Available CPU cores: [8, 8, 8, 8]
 Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
 
-Job 'job_001' scheduled on-prem cluster 0 successfully.
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
 
 --- Simulation Time: 10 ---
 Job 'job_003' submitted to scheduler at time 10.
-Available CPU cores: [472, 512, 512, 512]
-Available licenses: {'synopsys_dc': 9, 'cadence_innovus': 4}
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
 
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
 Job 'job_003' scheduled on-prem cluster 0 successfully.
 
 --- Simulation Time: 15 ---
-Available CPU cores: [432, 512, 512, 512]
-Available licenses: {'synopsys_dc': 7, 'cadence_innovus': 4}
+Available CPU cores: [6, 8, 8, 8]
+Available licenses: {'synopsys_dc': 8, 'cadence_innovus': 5}
 
-Task task_001_a of Job job_001 completed at time 15.
-Releasing licenses for Task task_001_a of Job job_001.
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
 
 --- Simulation Time: 20 ---
 Job 'job_002' submitted to scheduler at time 20.
-Available CPU cores: [432, 512, 512, 512]
-Available licenses: {'synopsys_dc': 8, 'cadence_innovus': 4}
+Available CPU cores: [6, 8, 8, 8]
+Available licenses: {'synopsys_dc': 8, 'cadence_innovus': 5}
 
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
 Job 'job_002' cannot be scheduled due to insufficient licenses: [License(name=synopsys_dc, count=9)]
 
 --- Simulation Time: 25 ---
-Available CPU cores: [432, 512, 512, 512]
-Available licenses: {'synopsys_dc': 8, 'cadence_innovus': 4}
+Available CPU cores: [6, 8, 8, 8]
+Available licenses: {'synopsys_dc': 8, 'cadence_innovus': 5}
 
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+128 7
 Job 'job_002' cannot be scheduled due to insufficient licenses: [License(name=synopsys_dc, count=9)]
 
 --- Simulation Time: 30 ---
-Available CPU cores: [432, 512, 512, 512]
-Available licenses: {'synopsys_dc': 8, 'cadence_innovus': 4}
+Available CPU cores: [6, 8, 8, 8]
+Available licenses: {'synopsys_dc': 8, 'cadence_innovus': 5}
 
-Task task_001_c of Job job_001 completed at time 30.
-Releasing licenses for Task task_001_c of Job job_001.
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+128 7
 Job 'job_002' cannot be scheduled due to insufficient licenses: [License(name=synopsys_dc, count=9)]
 
 --- Simulation Time: 35 ---
-Available CPU cores: [432, 512, 512, 512]
-Available licenses: {'synopsys_dc': 8, 'cadence_innovus': 4}
+Available CPU cores: [6, 8, 8, 8]
+Available licenses: {'synopsys_dc': 8, 'cadence_innovus': 5}
 
-Task task_001_b of Job job_001 completed at time 35.
-Releasing licenses for Task task_001_b of Job job_001.
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+128 7
 Job 'job_002' cannot be scheduled due to insufficient licenses: [License(name=synopsys_dc, count=9)]
 
 --- Simulation Time: 40 ---
-Available CPU cores: [432, 512, 512, 512]
+Available CPU cores: [6, 8, 8, 8]
 Available licenses: {'synopsys_dc': 8, 'cadence_innovus': 5}
 
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+128 7
 Job 'job_002' cannot be scheduled due to insufficient licenses: [License(name=synopsys_dc, count=9)]
 
 --- Simulation Time: 45 ---
-Available CPU cores: [432, 512, 512, 512]
+Available CPU cores: [6, 8, 8, 8]
 Available licenses: {'synopsys_dc': 8, 'cadence_innovus': 5}
 
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+128 7
 Job 'job_002' cannot be scheduled due to insufficient licenses: [License(name=synopsys_dc, count=9)]
 
 --- Simulation Time: 50 ---
-Available CPU cores: [432, 512, 512, 512]
+Available CPU cores: [6, 8, 8, 8]
 Available licenses: {'synopsys_dc': 8, 'cadence_innovus': 5}
 
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+128 7
 Job 'job_002' cannot be scheduled due to insufficient licenses: [License(name=synopsys_dc, count=9)]
 
 --- Simulation Time: 55 ---
-Available CPU cores: [432, 512, 512, 512]
+Available CPU cores: [6, 8, 8, 8]
 Available licenses: {'synopsys_dc': 8, 'cadence_innovus': 5}
 
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+128 7
 Job 'job_002' cannot be scheduled due to insufficient licenses: [License(name=synopsys_dc, count=9)]
 
 --- Simulation Time: 60 ---
-Available CPU cores: [432, 512, 512, 512]
+Available CPU cores: [6, 8, 8, 8]
 Available licenses: {'synopsys_dc': 8, 'cadence_innovus': 5}
 
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
 Task task_003_a of Job job_003 completed at time 60.
 Releasing licenses for Task task_003_a of Job job_003.
-Job 'job_002' scheduled on-prem cluster 0 successfully.
+Job 'job_002' scheduled on-prem cluster 1 successfully.
 
 --- Simulation Time: 65 ---
-Available CPU cores: [392, 512, 512, 512]
+Available CPU cores: [6, 1, 8, 8]
 Available licenses: {'synopsys_dc': 0, 'cadence_innovus': 5}
 
-Task task_001_d of Job job_001 completed at time 65.
-Releasing licenses for Task task_001_d of Job job_001.
-Job 'job_001' completed at time 65.
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
 Task task_002_a of Job job_002 completed at time 65.
 Releasing licenses for Task task_002_a of Job job_002.
 
 --- Simulation Time: 70 ---
-Available CPU cores: [432, 512, 512, 512]
+Available CPU cores: [6, 1, 8, 8]
 Available licenses: {'synopsys_dc': 5, 'cadence_innovus': 5}
 
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
 Task task_002_b of Job job_002 completed at time 70.
 Releasing licenses for Task task_002_b of Job job_002.
 Job 'job_002' completed at time 70.
 
 --- Simulation Time: 75 ---
-Available CPU cores: [472, 512, 512, 512]
+Available CPU cores: [6, 8, 8, 8]
 Available licenses: {'synopsys_dc': 9, 'cadence_innovus': 5}
 
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
 
 --- Simulation Time: 80 ---
-Available CPU cores: [472, 512, 512, 512]
+Available CPU cores: [6, 8, 8, 8]
 Available licenses: {'synopsys_dc': 9, 'cadence_innovus': 5}
 
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
 
 --- Simulation Time: 85 ---
-Available CPU cores: [472, 512, 512, 512]
+Available CPU cores: [6, 8, 8, 8]
 Available licenses: {'synopsys_dc': 9, 'cadence_innovus': 5}
 
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
 
 --- Simulation Time: 90 ---
-Available CPU cores: [472, 512, 512, 512]
+Available CPU cores: [6, 8, 8, 8]
 Available licenses: {'synopsys_dc': 9, 'cadence_innovus': 5}
 
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
 
 --- Simulation Time: 95 ---
-Available CPU cores: [472, 512, 512, 512]
+Available CPU cores: [6, 8, 8, 8]
 Available licenses: {'synopsys_dc': 9, 'cadence_innovus': 5}
 
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
 
 --- Simulation Time: 100 ---
-Available CPU cores: [472, 512, 512, 512]
+Available CPU cores: [6, 8, 8, 8]
 Available licenses: {'synopsys_dc': 9, 'cadence_innovus': 5}
 
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
 
 --- Simulation Time: 105 ---
-Available CPU cores: [472, 512, 512, 512]
+Available CPU cores: [6, 8, 8, 8]
 Available licenses: {'synopsys_dc': 9, 'cadence_innovus': 5}
 
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
 
 --- Simulation Time: 110 ---
-Available CPU cores: [472, 512, 512, 512]
+Available CPU cores: [6, 8, 8, 8]
 Available licenses: {'synopsys_dc': 9, 'cadence_innovus': 5}
 
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
 Task task_003_b of Job job_003 completed at time 110.
 Releasing licenses for Task task_003_b of Job job_003.
 Job 'job_003' completed at time 110.
 
+--- Simulation Time: 115 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+
+--- Simulation Time: 120 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+
+--- Simulation Time: 125 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+
+--- Simulation Time: 130 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+
+--- Simulation Time: 135 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+
+--- Simulation Time: 140 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+
+--- Simulation Time: 145 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+
+--- Simulation Time: 150 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+
+--- Simulation Time: 155 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+
+--- Simulation Time: 160 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+
+--- Simulation Time: 165 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+
+--- Simulation Time: 170 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+
+--- Simulation Time: 175 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+
+--- Simulation Time: 180 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+
+--- Simulation Time: 185 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+
+--- Simulation Time: 190 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+
+--- Simulation Time: 195 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+Job 'job_001' cannot be scheduled due to insufficient CPU cores on-prem.
+
+--- Simulation Time: 200 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+128 12
+Job 'job_001' scheduled on cloud successfully.
+
+--- Simulation Time: 205 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 9, 'cadence_innovus': 4}
+
+
+--- Simulation Time: 210 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 9, 'cadence_innovus': 4}
+
+Task task_001_a of Job job_001 completed at time 210.
+Releasing licenses for Task task_001_a of Job job_001.
+
+--- Simulation Time: 215 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 4}
+
+
+--- Simulation Time: 220 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 4}
+
+
+--- Simulation Time: 225 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 4}
+
+Task task_001_c of Job job_001 completed at time 225.
+Releasing licenses for Task task_001_c of Job job_001.
+
+--- Simulation Time: 230 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 4}
+
+Task task_001_b of Job job_001 completed at time 230.
+Releasing licenses for Task task_001_b of Job job_001.
+
+--- Simulation Time: 235 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+
+--- Simulation Time: 240 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+
+--- Simulation Time: 245 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+
+--- Simulation Time: 250 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+
+--- Simulation Time: 255 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+
+--- Simulation Time: 260 ---
+Available CPU cores: [8, 8, 8, 8]
+Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
+
+Task task_001_d of Job job_001 completed at time 260.
+Releasing licenses for Task task_001_d of Job job_001.
+Job 'job_001' completed at time 260.
+
 --- Simulation completed. --- 
 
 Post-Simulation Resource Status:
-Available CPU cores: [512, 512, 512, 512]
+Available CPU cores: [8, 8, 8, 8]
 Available licenses: {'synopsys_dc': 10, 'cadence_innovus': 5}
 
