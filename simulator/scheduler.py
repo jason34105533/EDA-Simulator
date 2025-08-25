@@ -2,7 +2,7 @@ from simulator.job import Job
 from simulator.resource_manager import ResourceManager
 
 class Scheduler:
-    def __init__(self, resource_manager):
+    def __init__(self, resource_manager, TwoPhase=False):
         """
         Initialize the Scheduler with a resource manager and time quantum.
         
@@ -12,6 +12,7 @@ class Scheduler:
         self.job_queue: list[Job] = []
         self.resource_manager: ResourceManager = resource_manager
         self.current_time = 0
+        self.TwoPhase = TwoPhase  # Whether to use Two-Phase scheduling (default is False)
         
 
     def set_current_time(self, time):
@@ -54,13 +55,13 @@ class Scheduler:
                     self.resource_manager.allocate_resources(job)
                     job.start(self.current_time)
                     print(f"Job '{job.job_id}' scheduled on-prem cluster {job.run_cluster} successfully.")
-                    job.run(self.current_time)
+                    job.run(self.current_time, scheduler=self, TwoPhase=self.TwoPhase)
                 else:
                     if self.resource_manager.can_schedule_job_on_cloud(job) == 0:
                         self.resource_manager.allocate_resources_on_cloud(job)
                         job.start(self.current_time, where="cloud")
                         print(f"Job '{job.job_id}' scheduled on cloud successfully.")
-                        job.run(self.current_time)
+                        job.run(self.current_time, scheduler=self, TwoPhase=self.TwoPhase)
                     else:
                         print(f"Job '{job.job_id}' cannot be scheduled due to insufficient licenses: {job.license}")
                 
@@ -70,7 +71,7 @@ class Scheduler:
                     self.resource_manager.allocate_resources(job)
                     job.start(self.current_time)
                     print(f"Job '{job.job_id}' scheduled on-prem cluster {job.run_cluster} successfully.")
-                    job.run(self.current_time)
+                    job.run(self.current_time, scheduler=self, TwoPhase=self.TwoPhase)
                 else:
                     if ret == 1:
                         print(f"Job '{job.job_id}' cannot be scheduled due to insufficient CPU cores on-prem.")
@@ -79,11 +80,11 @@ class Scheduler:
             
             elif job.status == 'running':
                 
-                job.run(self.current_time)
+                job.run(self.current_time, scheduler=self, TwoPhase=self.TwoPhase)
                 
                 if job.all_completed():
                     job.complete(self.current_time)
-                    self.resource_manager.release_resources(job)
+                    self.resource_manager.release_resources(job, TwoPhase=self.TwoPhase)
                     print(f"Job '{job.job_id}' completed at time {self.current_time}.")
                 else:
                     # print(f"Job '{job.job_id}' is still running.")  #[Log]

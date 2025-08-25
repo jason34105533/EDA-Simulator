@@ -1,5 +1,6 @@
 from simulator.task import Task
 from simulator.license import License
+# from simulator.scheduler import Scheduler
 
 class Job:
     def __init__(self, job_id: int, submit_time: int, cpu_cores: int, deadline: int, license: list[License], tasks: list[Task]):
@@ -38,10 +39,9 @@ class Job:
         completed = {t.task_id for t in self.tasks if t.status == "completed"}
         return [t for t in self.tasks if t.status == "pending" and t.is_ready(completed)]
     
-    def run(self, current_time):
+    def run(self, current_time, scheduler=None, TwoPhase=False):
         if self.status != "running":
             return
-        
 
         # 1) advance running tasks
         for task in self.tasks:
@@ -51,6 +51,10 @@ class Job:
                     self.cpu_cores += task.cpu_cores  # return cores to job's pool
                     self.using_cpu_cores -= task.cpu_cores
                     print(f"Task {task.task_id} of Job {self.job_id} completed at time {current_time}.")
+                    if TwoPhase and scheduler:
+                        print(f"Releasing licenses for Task {task.task_id} of Job {self.job_id}.") #[Log]
+                        for lic in task.license:
+                            scheduler.resource_manager.release_license(lic.license_name, lic.license_count)
                 else:
                     # print(f"Task {task.task_id} of Job {self.job_id} is still running.") #[Log]
                     pass

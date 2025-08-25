@@ -176,7 +176,7 @@ class ResourceManager:
         
         return True
         
-    def release_resources(self, job):
+    def release_resources(self, job, TwoPhase=False):
         """
         Release cores + licenses for job.
         Uses job.run_cluster to know where to free cores.
@@ -184,6 +184,9 @@ class ResourceManager:
         cluster_idx = job.run_cluster
         if cluster_idx is not None:
             self.release_cores(job.cpu_cores, cluster_idx)
+            
+        if TwoPhase:
+            return
         
         for license in job.license:
             self.release_license(license.license_name, license.license_count)

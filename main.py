@@ -26,7 +26,7 @@ if __name__ == "__main__":
     resource_manager = ResourceManager('config/infra_config.yaml')
 
     # Instantiate Scheduler
-    scheduler = Scheduler(resource_manager)
+    scheduler = Scheduler(resource_manager, TwoPhase=True)
     
     # Instantiate JobSubmitter and load workflow
     job_submitter = JobSubmitter('workflow/advanced_workflow_1.yaml', scheduler)
@@ -48,7 +48,14 @@ if __name__ == "__main__":
         job_submitter.submit_jobs()
         scheduler.schedule_jobs()
 
+    print("\n--- Simulation completed. --- \n")
+    # Print License and CPU core
+    
+    print("Post-Simulation Resource Status:")
+    print(f"Available CPU cores: {resource_manager.get_available_cores()}")
+    print(f"Available licenses: {resource_manager.licenses}\n")
+    
     # Calculate performance metrics
     # scheduler.calculate_performance_metrics()
     
-    print("Simulation completed.")
+   
