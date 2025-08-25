@@ -10,6 +10,7 @@ class Job:
         self.license = license
         
         # Runtime attributes
+        self.run_cluster = None
         self.start_time = None
         self.end_time = None
         self.status = "pending"  # or "running", "completed", "missed_deadline"
