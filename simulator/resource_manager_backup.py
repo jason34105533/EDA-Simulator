@@ -6,6 +6,7 @@ from simulator.license import License
 
 class ResourceManager:
     def __init__(self, config):
+        
         self.resources = {}
         self.licenses = {}
         
@@ -20,22 +21,15 @@ class ResourceManager:
         if 'resources' in config_data:
             resources_config = config_data['resources']
             
-            # On-prem clusters
-            # On-prem clusters
+            # Initialize on-prem resources
             if 'on_prem' in resources_config:
-                cpu_per_node = resources_config['on_prem'].get('cpu_cores_per_node', 0)
-                nodes_per_cluster = resources_config['on_prem'].get('nodes_per_cluster', 0)
-                num_clusters = resources_config['on_prem'].get('number_of_clusters', 1)
-
-                cores_per_cluster = cpu_per_node * nodes_per_cluster
-
                 self.resources['on_prem'] = {
-                    'cores_per_cluster': cores_per_cluster,
-                    'clusters': [cores_per_cluster for _ in range(num_clusters)],
+                    'total_cores': resources_config['on_prem'].get('total_cpu_cores', 0),
+                    'available_cores': resources_config['on_prem'].get('total_cpu_cores', 0),
                     'max_jobs': resources_config['on_prem'].get('max_jobs_on_prem', 0)
                 }
             
-            # Cloud
+            # Initialize cloud resources
             if 'cloud' in resources_config:
                 self.resources['cloud'] = {
                     'provider': resources_config['cloud'].get('provider', ''),
@@ -44,11 +38,12 @@ class ResourceManager:
                     'cost_per_cpu_minute': resources_config['cloud'].get('cost_per_cpu_minute', 0.0)
                 }
             
-            # License limits
+            # Initialize license limits
             if 'license_limits' in resources_config:
                 for license_type, count in resources_config['license_limits'].items():
                     self.licenses[license_type] = count
 
+        # Store other configuration settings
         self.config_data = config_data
         
         print(f"ResourceManager initialized with config: {config_data}")
@@ -57,22 +52,26 @@ class ResourceManager:
         
 
     def get_available_cores(self):
-        """Return total available cores across all clusters."""
-        return (self.resources['on_prem']['clusters'])
+        """
+        Returns the number of available CPU cores for a job on prem.
+        """
+        return self.resources['on_prem']['available_cores']
     
-    def allocate_cores(self, required_cores, cluster_idx):
+    def allocate_cores(self, required_cores):
         """
-        Try to allocate cores from a specific cluster.
-        Returns True if successful.
+        Allocates CPU cores for a job if available.
+        Returns True if allocation is successful, False otherwise.
         """
-        if self.resources['on_prem']['clusters'][cluster_idx] >= required_cores:
-            self.resources['on_prem']['clusters'][cluster_idx] -= required_cores
+        if self.resources['on_prem']['available_cores'] >= required_cores:
+            self.resources['on_prem']['available_cores'] -= required_cores
             return True
         return False
     
-    def release_cores(self, cores, cluster_idx):
-        """Release cores back to a specific cluster."""
-        self.resources['on_prem']['clusters'][cluster_idx] += cores
+    def release_cores(self, cores):
+        """
+        Releases allocated CPU cores back to the resource pool.
+        """
+        self.resources['on_prem']['available_cores'] += cores
     
     def get_available_licenses(self, job_license):
         """
@@ -99,48 +98,39 @@ class ResourceManager:
         else:
             self.licenses[job_license] = number_of_license
             
-    def can_schedule_job(self, job: Job) -> int:
+    def can_schedule_job(self, job: Job):
         """
-        Check if job can run on its assigned cluster.
-        Assumes scheduler already set job.run_cluster.
+        Check if a job can be scheduled based on available CPU cores and licenses.
+        
+        :param job: The job to be checked.
+        :return: True if the job can be scheduled, False otherwise.
         """
-
-        # Check CPU
-        # Find a cluster with available cores
-        cluster_idx = None
-        for i, available_cores in enumerate(self.resources['on_prem']['clusters']):
-            if available_cores >= job.cpu_cores:
-                cluster_idx = i
-                break
+        # Check CPU core availability
+        if self.get_available_cores() < job.cpu_cores:
+            return False
         
-        if cluster_idx is None:
-            return 1 #'Insufficient CPU cores'
-        
-        
-        # Check licenses
+        # Check license availability
         for license in job.license:
             if self.get_available_licenses(license.license_name) < license.license_count:
-                return 2 #'Insufficient licenses'
-            
-        # Set the cluster for the job
-        job.run_cluster = cluster_idx
+                return False
         
-        return 0 #'Can schedule'
+        return True
     
 
-    def can_schedule_job_on_cloud(self, job: Job) -> int:
+    def can_schedule_job_on_cloud(self, job: Job):
         """
         Check if a job can be scheduled on cloud based on available CPU cores.
         
         :param job: The job to be checked.
-        :return: 0 if the job can be scheduled, 1 if insufficient CPU cores, 2 if insufficient licenses.
+        :return: True if the job can be scheduled on cloud, False otherwise.
         """
+        # Check CPU core availability on cloud
         if self.resources['cloud']['available_cores'] >= job.cpu_cores:
             for license in job.license:
                 if self.get_available_licenses(license.license_name) < license.license_count:
-                    return 2  # 'Insufficient licenses'
-            return 0  # 'Can schedule'
-        return 1  # 'Insufficient CPU cores'
+                    return False
+            return True
+        return False
     
     def allocate_resources_on_cloud(self, job):
         """
@@ -154,36 +144,44 @@ class ResourceManager:
         for license in job.license:
             if not self.allocate_license(license.license_name, license.license_count):
                 return False
+        
         return True
     
     
-    def allocate_resources(self, job: Job):
+    def allocate_resources(self, job):
         """
-        Allocate cores + licenses for job on-prem.
-        Scheduler must set job.run_cluster.
+        Allocate resources (CPU cores and licenses) for a job.
+        
+        :param job: The job for which resources are to be allocated.
+        :return: True if resources are successfully allocated, False otherwise.
         """
-        cluster_idx = job.run_cluster
-        if cluster_idx is None:
+        # Allocate CPU cores
+        if not self.allocate_cores(job.cpu_cores):
             return False
         
-        if not self.allocate_cores(job.cpu_cores, cluster_idx):
-            return False
-        
+        # Allocate licenses
         for license in job.license:
             if not self.allocate_license(license.license_name, license.license_count):
-                self.release_cores(job.cpu_cores, cluster_idx)
+                # If license allocation fails, release previously allocated cores
+                self.release_cores(job.cpu_cores)
                 return False
         
         return True
         
     def release_resources(self, job):
         """
-        Release cores + licenses for job.
-        Uses job.run_cluster to know where to free cores.
+        Release resources (CPU cores and licenses) allocated to a job.
+        :param job: The job for which resources are to be released.
         """
-        cluster_idx = job.run_cluster
-        if cluster_idx is not None:
-            self.release_cores(job.cpu_cores, cluster_idx)
+        # Release CPU cores
+        self.release_cores(job.cpu_cores)
         
+        # Release licenses
         for license in job.license:
             self.release_license(license.license_name, license.license_count)
+            
+    
+        
+
+
+    

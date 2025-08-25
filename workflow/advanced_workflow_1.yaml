@@ -1,0 +1,73 @@
+workflow_name: "test_case_02"
+jobs:
+  - job_id: job_001
+    submit_time: 5
+    deadline: 600
+    tasks:
+      - task_id: task_001_a
+        cpu_cores: 2
+        duration: 10
+        license:
+          - license_name: synopsys_dc
+            license_count: 1
+        depends_on: []   # no dependencies (entry task)
+
+      - task_id: task_001_b
+        cpu_cores: 1
+        duration: 20
+        license:
+          - license_name: cadence_innovus
+            license_count: 1
+        depends_on: [task_001_a]
+
+      - task_id: task_001_c
+        cpu_cores: 1
+        duration: 15
+        license: []
+        depends_on: [task_001_a]
+
+      - task_id: task_001_d
+        cpu_cores: 4
+        duration: 30
+        license: []
+        depends_on: [task_001_b, task_001_c]  # merge point
+
+  - job_id: job_002
+    submit_time: 20
+    deadline: 25
+    tasks:
+      - task_id: task_002_a
+        cpu_cores: 40
+        duration: 5
+        license:
+          - license_name: synopsys_dc
+            license_count: 5
+        depends_on: []
+
+      - task_id: task_002_b
+        cpu_cores: 42
+        duration: 5
+        license:
+          - license_name: synopsys_dc
+            license_count: 5
+        depends_on: [task_002_a]
+
+  - job_id: job_003
+    submit_time: 10
+    deadline: 200
+    tasks:
+      - task_id: task_003_a
+        cpu_cores: 2
+        duration: 50
+        license:
+          - license_name: synopsys_dc
+            license_count: 1
+        depends_on: []
+
+      - task_id: task_003_b
+        cpu_cores: 2
+        duration: 50
+        license:
+          - license_name: synopsys_dc
+            license_count: 1
+        depends_on: [task_003_a]

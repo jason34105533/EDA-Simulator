@@ -2,8 +2,8 @@ workflow_name: "test_case_01"
 jobs:
   - job_id: job_001
     submit_time: 5          # seconds from simulation start
-    cpu_cores: 4
-    duration: 30            # how long it runs (sec)
+    cpu_cores: 40
+    duration: 10             # how long it runs (sec)
     deadline: 600
     license: 
     - license_name: synopsys_dc
@@ -13,18 +13,27 @@ jobs:
   
   - job_id: job_002
     submit_time: 20
-    cpu_cores: 82
-    duration: 10
+    cpu_cores: 510
+    duration: 5
     deadline: 25
     license:
     - license_name: synopsys_dc
-      license_count: 10
+      license_count: 1
 
   - job_id: job_003
     submit_time: 10
     cpu_cores: 2
-    duration: 100
+    duration: 5
     deadline: 200
     license:
     - license_name: synopsys_dc
       license_count: 2
+
+  - job_id: job_004
+    submit_time: 10
+    cpu_cores: 200
+    duration: 30
+    deadline: 200
+    license:
+    - license_name: synopsys_dc
+      license_count: 8

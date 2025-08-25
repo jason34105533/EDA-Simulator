@@ -30,7 +30,7 @@ class Scheduler:
         :param job: The job to be added.
         """
         self.job_queue.append(job)
-        print(f"Job '{job.job_id}' added to the queue.")
+        # print(f"Job '{job.job_id}' added to the queue.")
         
     def schedule_jobs(self):
         """
@@ -48,25 +48,30 @@ class Scheduler:
             if job.status == 'missed_deadline':  
                 # Just on time is also considered as missed, to force using cloud resources to avoid failed
                 print(f"Job '{job.job_id}' is missing its deadline.")
-                if self.resource_manager.can_schedule_job(job):
+                ret = self.resource_manager.can_schedule_job(job)
+                if ret == 0:
                     self.resource_manager.allocate_resources(job)
                     job.start(self.current_time)
-                    print(f"Job '{job.job_id}' scheduled on-prem successfully.")
+                    print(f"Job '{job.job_id}' scheduled on-prem cluster {job.run_cluster} successfully.")
                 else:
-                    if self.resource_manager.can_schedule_job_on_cloud(job):
+                    if self.resource_manager.can_schedule_job_on_cloud(job) == 0:
                         self.resource_manager.allocate_resources_on_cloud(job)
                         job.start(self.current_time, where="cloud")
                         print(f"Job '{job.job_id}' scheduled on cloud successfully.")
                     else:
-                        print(f"Job '{job.job_id}' cannot be scheduled at this moment due to resource constraints.")
+                        print(f"Job '{job.job_id}' cannot be scheduled at this moment due to insufficient licenses")
                 
             elif job.status == 'pending':
-                if self.resource_manager.can_schedule_job(job):
+                ret = self.resource_manager.can_schedule_job(job)
+                if ret == 0:
                     self.resource_manager.allocate_resources(job)
                     job.start(self.current_time)
-                    print(f"Job '{job.job_id}' scheduled on-prem successfully.")
+                    print(f"Job '{job.job_id}' scheduled on-prem cluster {job.run_cluster} successfully.")
                 else:
-                    print(f"Job '{job.job_id}' cannot be scheduled at this moment due to resource constraints.")
+                    if ret == 1:
+                        print(f"Job '{job.job_id}' cannot be scheduled at this moment due to insufficient CPU cores on-prem.")
+                    else :  # ret == 2
+                        print(f"Job '{job.job_id}' cannot be scheduled at this moment due to insufficient licenses")
             
             elif job.status == 'running':
                 if self.current_time >= job.start_time + job.duration:

@@ -1,11 +1,13 @@
 resources:
   on_prem:
-    total_cpu_cores: 64            # Total CPU cores available on-prem
+    cpu_cores_per_node: 64         # CPU cores available per on-prem node
+    nodes_per_cluster: 8           # Total number of on-prem nodes
     max_jobs_on_prem: 10           # Max number of jobs that can be scheduled on-prem
+    number_of_clusters: 4          # Number of physical clusters in the on-prem cluster
 
   cloud:
     provider: "AWS"                # Or "Azure", "GoogleCloud", etc.
-    max_cpu_cores: 128             # Total CPU cores available in the cloud (elastic)
+    available_cores: 128             # Maximum CPU cores available in the cloud for a job
     cost_per_cpu_minute: 0.2       # Cost per CPU minute in cloud, could be dynamic
 
   job_limits:
