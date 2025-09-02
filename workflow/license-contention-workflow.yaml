@@ -1,0 +1,220 @@
+workflow_name: "extreme_license_contention_test"
+
+jobs:
+  - job_id: job_contention_001
+    submit_time: 0
+    deadline: 14400  # 4 hours
+    tasks:
+      - task_id: task_001_a
+        cpu_cores: 32
+        duration: 1800  # 30 minutes holding licenses
+        licenses:
+          - license_name: synopsys_icc2
+            license_count: 3  # 3 out of 5 total available
+          - license_name: cadence_innovus
+            license_count: 2  # 2 out of 4 total available
+        depends_on: []
+      
+      - task_id: task_001_b
+        cpu_cores: 24
+        duration: 2400  # 40 minutes holding licenses
+        licenses:
+          - license_name: mentor_calibre
+            license_count: 4  # 4 out of 6 total available
+        depends_on: []
+      
+      - task_id: task_001_c
+        cpu_cores: 8
+        duration: 1200  # 20 minutes
+        licenses:
+          - license_name: synopsys_primetime_px
+            license_count: 2  # 2 out of 3 total
+          - license_name: cadence_voltus
+            license_count: 2  # ALL 2 available
+        depends_on: [task_001_a]
+      
+      - task_id: task_001_d
+        cpu_cores: 16
+        duration: 1800  # 30 minutes
+        licenses:
+          - license_name: mentor_calibre_xrc
+            license_count: 2  # 2 out of 3 total
+          - license_name: synopsys_starrc
+            license_count: 2  # ALL 2 available
+        depends_on: [task_001_b]
+      
+      - task_id: task_001_e
+        cpu_cores: 12
+        duration: 900  # 15 minutes
+        licenses:
+          - license_name: synopsys_primetime_si
+            license_count: 1  # THE ONLY ONE AVAILABLE
+        depends_on: [task_001_a]
+
+  - job_id: job_contention_002
+    submit_time: 30  # 30 seconds later
+    deadline: 14400
+    tasks:
+      - task_id: task_002_a
+        cpu_cores: 40
+        duration: 2100
+        licenses:
+          - license_name: synopsys_icc2
+            license_count: 4  # Will compete with job_001
+          - license_name: cadence_innovus
+            license_count: 3  # Will compete with job_001
+        depends_on: []
+      
+      - task_id: task_002_b
+        cpu_cores: 28
+        duration: 1800
+        licenses:
+          - license_name: mentor_calibre
+            license_count: 5  # Will compete with job_001
+        depends_on: []
+      
+      - task_id: task_002_c
+        cpu_cores: 10
+        duration: 1500
+        licenses:
+          - license_name: synopsys_primetime_px
+            license_count: 3  # ALL 3 available
+          - license_name: cadence_voltus_fi
+            license_count: 2  # ALL 2 available
+        depends_on: [task_002_a]
+      
+      - task_id: task_002_d
+        cpu_cores: 20
+        duration: 2400
+        licenses:
+          - license_name: mentor_calibre_xrc
+            license_count: 3  # ALL 3 available
+        depends_on: [task_002_b]
+      
+      - task_id: task_002_e
+        cpu_cores: 8
+        duration: 1200
+        licenses:
+          - license_name: synopsys_primetime_si
+            license_count: 1  # THE ONLY ONE - DIRECT CONFLICT
+        depends_on: [task_002_a]
+
+  - job_id: job_contention_003
+    submit_time: 60  # 1 minute after start
+    deadline: 14400
+    tasks:
+      - task_id: task_003_a
+        cpu_cores: 36
+        duration: 1800
+        licenses:
+          - license_name: synopsys_icc2
+            license_count: 2
+          - license_name: cadence_innovus
+            license_count: 1
+        depends_on: []
+      
+      - task_id: task_003_b
+        cpu_cores: 32
+        duration: 2700
+        licenses:
+          - license_name: mentor_calibre
+            license_count: 3
+        depends_on: []
+      
+      - task_id: task_003_c
+        cpu_cores: 12
+        duration: 1800
+        licenses:
+          - license_name: cadence_voltus
+            license_count: 2  # Will conflict with job_001
+          - license_name: synopsys_formality
+            license_count: 2  # ALL 2 available
+        depends_on: [task_003_a]
+      
+      - task_id: task_003_d
+        cpu_cores: 18
+        duration: 2100
+        licenses:
+          - license_name: synopsys_starrc
+            license_count: 2  # Will conflict with job_001
+        depends_on: [task_003_b]
+
+  - job_id: job_contention_004
+    submit_time: 90  # 1.5 minutes after start
+    deadline: 14400
+    tasks:
+      - task_id: task_004_a
+        cpu_cores: 24
+        duration: 2400
+        licenses:
+          - license_name: synopsys_dc
+            license_count: 4  # 4 out of 8 total
+          - license_name: cadence_genus
+            license_count: 3  # 3 out of 6 total
+        depends_on: []
+      
+      - task_id: task_004_b
+        cpu_cores: 20
+        duration: 1500
+        licenses:
+          - license_name: synopsys_dft_compiler
+            license_count: 3  # 3 out of 4 total
+        depends_on: [task_004_a]
+      
+      - task_id: task_004_c
+        cpu_cores: 16
+        duration: 1800
+        licenses:
+          - license_name: cadence_jaspergold
+            license_count: 2  # ALL 2 available
+          - license_name: synopsys_spyglass
+            license_count: 3  # 3 out of 5 total
+        depends_on: []
+      
+      - task_id: task_004_d
+        cpu_cores: 14
+        duration: 1200
+        licenses:
+          - license_name: mentor_questa
+            license_count: 1  # THE ONLY ONE - MAJOR CONFLICT
+        depends_on: [task_004_c]
+
+  - job_id: job_contention_005
+    submit_time: 120  # 2 minutes after start
+    deadline: 14400
+    tasks:
+      - task_id: task_005_a
+        cpu_cores: 48
+        duration: 3600  # 1 hour - very long hold
+        licenses:
+          - license_name: synopsys_icc2
+            license_count: 5  # ALL 5 available - BLOCKS EVERYONE
+        depends_on: []
+      
+      - task_id: task_005_b
+        cpu_cores: 32
+        duration: 2700
+        licenses:
+          - license_name: cadence_innovus
+            license_count: 4  # ALL 4 available - BLOCKS EVERYONE
+        depends_on: []
+      
+      - task_id: task_005_c
+        cpu_cores: 16
+        duration: 1800
+        licenses:
+          - license_name: synopsys_primetime
+            license_count: 6  # 6 out of 10 total
+          - license_name: cadence_tempus
+            license_count: 4  # 4 out of 7 total
+        depends_on: [task_005_a, task_005_b]
+      
+      - task_id: task_005_d
+        cpu_cores: 12
+        duration: 1500
+        licenses:
+          - license_name: cadence_conformal
+            license_count: 3  # ALL 3 available
+          - license_name: synopsys_formality
+            license_count: 2  # ALL 2 available
+        depends_on: [task_005_c]

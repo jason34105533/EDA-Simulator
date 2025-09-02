@@ -112,6 +112,9 @@ class JobSubmitter:
 
             for job in jobs:
                 print(f"Loaded job: {job.job_id} with submit time {job.submit_time} and deadline {job.deadline}.")  #[Log]
+                # print license requirements
+                print(f"  License requirements: {[f'{lic.license_name}: {lic.license_count}' for lic in job.license]}")  #[Log]
+                print(f"  Estimated CPU cores: {job.cpu_cores}")  #[Log]
             
             print(f"Loaded workflow '{workflow_data.get('workflow_name', 'Unknown')}' with {len(jobs)} jobs.")  #[Log]
             return jobs
@@ -140,5 +143,7 @@ class JobSubmitter:
     def all_jobs_submitted(self):
         """Check if all jobs are submitted."""
         return len(self.job_queue) == 0
+    
+    
         
         

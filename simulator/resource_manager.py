@@ -8,6 +8,7 @@ class ResourceManager:
     def __init__(self, config):
         self.resources = {}
         self.licenses = {}
+        self.cost_per_cpu_minute = 0.0
         
         # Parse the YAML configuration file
         if os.path.exists(config):
@@ -43,6 +44,7 @@ class ResourceManager:
                     'cost_per_cpu_minute': resources_config['cloud'].get('cost_per_cpu_minute', 0.0)
                 }
             
+                self.cost_per_cpu_minute = resources_config['cloud'].get('cost_per_cpu_minute', 0.0)
             # License limits
             if 'license_limits' in resources_config:
                 for license_type, count in resources_config['license_limits'].items():
@@ -185,9 +187,6 @@ class ResourceManager:
         cluster_idx = job.run_cluster
         if cluster_idx is not None:
             self.release_cores(job.cpu_cores, cluster_idx)
-            
-        if TwoPhase:
-            return
         
         for license in job.license:
             self.release_license(license.license_name, license.license_count)

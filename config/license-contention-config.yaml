@@ -1,0 +1,77 @@
+# Updated License Configuration for LATC Testing
+# Realistic license pools that support 30-50 concurrent EDA jobs
+
+resources:
+  on_prem:
+    cpu_cores_per_node: 64
+    nodes_per_cluster: 8
+    max_jobs_on_prem: 500
+    number_of_clusters: 4
+
+  cloud:
+    provider: "AWS"
+    available_cores: 2048
+    cost_per_cpu_minute: 0.05
+
+  job_limits:
+    max_runtime: 86400
+    max_cpu_per_job: 128
+    max_parallel_jobs: 300
+
+  global_settings:
+    time_quantum: 5
+
+  # REALISTIC LICENSE POOLS FOR CONTENTION TESTING
+  # Based on typical EDA license deployments for 30-50 concurrent jobs
+
+  license_limits:
+    # HIGH-END SYNTHESIS TOOLS (Well provisioned)
+    synopsys_dc: 35                    # Synthesis - sufficient for most jobs
+    cadence_genus: 25                  # Synthesis - good coverage
+    synopsys_design_vision: 15         # GUI synthesis - fewer needed
+
+    # SIMULATION TOOLS (High demand, well provisioned)
+    synopsys_vcs: 80                   # VCS simulation - heavily used
+    cadence_xcelium: 60                # Xcelium simulation - good alternative
+    mentor_questa: 45                  # Questa - popular for verification
+
+    # PLACE & ROUTE TOOLS (Critical bottleneck - increased significantly)
+    synopsys_icc2: 25                  # ICC2 - critical P&R tool
+    cadence_innovus: 20                # Innovus - critical P&R tool
+
+    # TIMING ANALYSIS (High demand)
+    synopsys_primetime: 35             # Standard timing analysis
+    cadence_tempus: 25                 # Alternative timing tool
+    synopsys_primetime_px: 15          # Power-aware timing (fewer needed)
+    synopsys_primetime_si: 8           # SI analysis (specialized)
+
+    # POWER ANALYSIS (Moderate demand)
+    cadence_voltus: 12                 # Power analysis - increased
+    cadence_voltus_fi: 8               # SI power analysis
+    synopsys_ptpx: 10                  # PowerTheater - alternative
+
+    # DFT TOOLS (Specialized but necessary)
+    synopsys_dft_compiler: 15          # DFT insertion
+    cadence_modus: 12                  # DFT alternative
+
+    # PHYSICAL VERIFICATION (Long runtime, many needed)
+    mentor_calibre: 30                 # Calibre DRC/LVS/DFM
+    synopsys_icvalidator: 20           # IC Validator alternative
+
+    # EXTRACTION TOOLS (Critical for signoff)
+    mentor_calibre_xrc: 15             # Calibre extraction
+    synopsys_starrc: 12                # StarRC extraction
+
+    # LINTING & CDC (Front-end verification)
+    synopsys_spyglass: 20              # SpyGlass linting/CDC
+    cadence_hal: 15                    # HAL linting
+    cadence_jaspergold: 10             # JasperGold CDC/formal
+
+    # FORMAL VERIFICATION (Specialized, fewer jobs)
+    cadence_conformal: 8               # Conformal equivalence
+    synopsys_formality: 8              # Formality equivalence
+
+    # SPECIALIZED ANALYSIS TOOLS
+    synopsys_hspice: 12                # Circuit simulation
+    cadence_spectre: 10                # Alternative circuit sim
+    mentor_eldo: 8                     # Another circuit sim option

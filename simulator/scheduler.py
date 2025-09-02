@@ -2,7 +2,7 @@ from simulator.job import Job
 from simulator.resource_manager import ResourceManager
 
 class Scheduler:
-    def __init__(self, resource_manager, TwoPhase=False):
+    def __init__(self, resource_manager, TwoPhase=False, type="Standard"):
         """
         Initialize the Scheduler with a resource manager and time quantum.
         
@@ -13,6 +13,7 @@ class Scheduler:
         self.resource_manager: ResourceManager = resource_manager
         self.current_time = 0
         self.TwoPhase = TwoPhase  # Whether to use Two-Phase scheduling (default is False)
+        self.type = type
         
 
     def set_current_time(self, time):
@@ -89,7 +90,7 @@ class Scheduler:
                 if job.all_completed():
                     job.complete(self.current_time)
                     self.resource_manager.release_resources(job, TwoPhase=self.TwoPhase)
-                    print(f"Job '{job.job_id}' completed at time {self.current_time}.")
+                    print(f"Job '{job.job_id}' completed job at time {self.current_time}.")
                 else:
                     # print(f"Job '{job.job_id}' is still running.")  #[Log]
                     pass
@@ -123,4 +124,40 @@ class Scheduler:
                 return False
         return True
 
+    def calculate_performance_metrics(self):
+        """
+        Calculate and print performance metrics: Wait Time, Turnaround Time,
+        Deadline Miss Rate, and Money Cost.
+        """
+        total_wait_time = 0
+        total_turnaround_time = 0
+        total_jobs = len(self.job_queue)
+        missed_deadlines = 0
+        total_cost = 0.0
+        
+        for job in self.job_queue:
+            wait_time = job.start_time - job.submit_time
+            turnaround_time = job.end_time - job.submit_time
+            run_time = job.end_time - job.start_time
+            cost = self.resource_manager.resources['cloud']['cost_per_cpu_minute'] * job.cpu_cores * (run_time / 60) if job.where == "cloud" else 0.0
+            
+            total_wait_time += wait_time
+            total_turnaround_time += turnaround_time
+            total_cost += cost
+            
+            if job.start_time > job.deadline:
+                missed_deadlines += 1
+            
+            print(f"Job '{job.job_id}': Wait Time = {wait_time}, Turnaround Time = {turnaround_time}, Cost = ${cost:.2f}")
+        
+        avg_wait_time = total_wait_time / total_jobs if total_jobs > 0 else 0
+        avg_turnaround_time = total_turnaround_time / total_jobs if total_jobs > 0 else 0
+        deadline_miss_rate = (missed_deadlines / total_jobs) * 100 if total_jobs > 0 else 0
+        
+        print("\n--- Performance Metrics ---")
+        print(f"Average Wait Time: {avg_wait_time:.2f}")
+        print(f"Average Turnaround Time: {avg_turnaround_time:.2f}")
+        print(f"Deadline Miss Rate: {deadline_miss_rate:.2f}%")
+        print(f"Total Money Cost: ${total_cost:.2f}")
+        print("---------------------------\n")
     

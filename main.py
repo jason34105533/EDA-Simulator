@@ -1,5 +1,7 @@
-from job_submitter.submitter import JobSubmitter
+# from job_submitter.submitter import JobSubmitter
 from simulator.scheduler import Scheduler
+from job_submitter.LATC_submitter import JobSubmitter
+
 from simulator.resource_manager import ResourceManager
 from simulator.job import Job
 
@@ -17,19 +19,24 @@ def stop_simulation():
     print("Stopping simulation...")
     exit(0)
     
+CONFIG_FILE = 'config/license-contention-config.yaml'
+# WORKFLOW_FILE = 'workflow/license-contention-workflow.yaml'
+WORKFLOW_FILE = 'possible.yaml'
+# WORKFLOW_FILE = "workflow/advanced_workflow_1.yaml"
+    
 TIME_QUANTUM = 5  # Define the time quantum for the simulation
 
 if __name__ == "__main__":
     print("Starting EDA Job Scheduling Simulation...")
 
     # Instantiate ResourceManager
-    resource_manager = ResourceManager('config/infra_config.yaml')
+    resource_manager = ResourceManager(CONFIG_FILE)
 
     # Instantiate Scheduler
-    scheduler = Scheduler(resource_manager, TwoPhase=True)
+    scheduler = Scheduler(resource_manager, TwoPhase=True, type="LATC")  # Change type to "LATC" for LATC scheduling
     
     # Instantiate JobSubmitter and load workflow
-    job_submitter = JobSubmitter('workflow/advanced_workflow_1.yaml', scheduler)
+    job_submitter = JobSubmitter(WORKFLOW_FILE, scheduler)
 
     
     time = 0  # Initialize simulation time
@@ -56,6 +63,4 @@ if __name__ == "__main__":
     print(f"Available licenses: {resource_manager.licenses}\n")
     
     # Calculate performance metrics
-    # scheduler.calculate_performance_metrics()
-    
-   
+    scheduler.calculate_performance_metrics()

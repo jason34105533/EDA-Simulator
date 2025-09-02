@@ -1,0 +1,530 @@
+workflow_name: realistic_contention_mobile_5jobs
+jobs:
+- job_id: job_cpu_core_001
+  submit_time: 0
+  deadline: 43200
+  tasks:
+  - task_id: task_001_a
+    cpu_cores: 8
+    duration: 3068
+    licenses:
+    - license_name: synopsys_dc
+      license_count: 2
+    - license_name: cadence_genus
+      license_count: 1
+    depends_on: []
+  - task_id: task_001_b
+    cpu_cores: 18
+    duration: 3911
+    licenses:
+    - license_name: synopsys_icc2
+      license_count: 2
+    - license_name: cadence_innovus
+      license_count: 1
+    depends_on: []
+  - task_id: task_001_c
+    cpu_cores: 35
+    duration: 4678
+    licenses:
+    - license_name: cadence_innovus
+      license_count: 2
+    - license_name: synopsys_icc2
+      license_count: 1
+    depends_on: []
+  - task_id: task_001_d
+    cpu_cores: 8
+    duration: 2286
+    licenses:
+    - license_name: synopsys_primetime
+      license_count: 1
+    - license_name: cadence_tempus
+      license_count: 1
+    depends_on:
+    - task_001_c
+  - task_id: task_001_e
+    cpu_cores: 16
+    duration: 5695
+    licenses:
+    - license_name: synopsys_icvalidator
+      license_count: 1
+    - license_name: mentor_calibre
+      license_count: 1
+    depends_on:
+    - task_001_c
+  - task_id: task_001_f
+    cpu_cores: 5
+    duration: 4167
+    licenses:
+    - license_name: cadence_voltus_fi
+      license_count: 1
+    - license_name: synopsys_primetime_si
+      license_count: 1
+    depends_on:
+    - task_001_c
+  - task_id: task_001_g
+    cpu_cores: 16
+    duration: 3186
+    licenses:
+    - license_name: synopsys_icvalidator
+      license_count: 2
+    - license_name: mentor_calibre
+      license_count: 1
+    depends_on:
+    - task_001_c
+  - task_id: task_001_h
+    cpu_cores: 10
+    duration: 1658
+    licenses:
+    - license_name: synopsys_primetime
+      license_count: 1
+    - license_name: cadence_tempus
+      license_count: 1
+    depends_on:
+    - task_001_c
+  - task_id: task_001_i
+    cpu_cores: 4
+    duration: 2940
+    licenses:
+    - license_name: synopsys_primetime_si
+      license_count: 1
+    - license_name: cadence_voltus_fi
+      license_count: 1
+    depends_on:
+    - task_001_c
+  - task_id: task_001_j
+    cpu_cores: 27
+    duration: 7315
+    licenses:
+    - license_name: cadence_innovus
+      license_count: 3
+    - license_name: synopsys_icc2
+      license_count: 1
+    depends_on: []
+- job_id: job_gpu_block_002
+  submit_time: 120
+  deadline: 43200
+  tasks:
+  - task_id: task_002_a
+    cpu_cores: 11
+    duration: 1028
+    licenses:
+    - license_name: cadence_xcelium
+      license_count: 1
+    - license_name: synopsys_vcs
+      license_count: 1
+    depends_on: []
+  - task_id: task_002_b
+    cpu_cores: 11
+    duration: 3159
+    licenses:
+    - license_name: synopsys_dc
+      license_count: 2
+    - license_name: cadence_genus
+      license_count: 1
+    depends_on:
+    - task_002_a
+  - task_id: task_002_c
+    cpu_cores: 31
+    duration: 3836
+    licenses:
+    - license_name: synopsys_icc2
+      license_count: 3
+    - license_name: cadence_innovus
+      license_count: 1
+    depends_on: []
+  - task_id: task_002_d
+    cpu_cores: 21
+    duration: 13109
+    licenses:
+    - license_name: synopsys_icc2
+      license_count: 2
+    - license_name: cadence_innovus
+      license_count: 1
+    depends_on: []
+  - task_id: task_002_e
+    cpu_cores: 7
+    duration: 3769
+    licenses:
+    - license_name: cadence_tempus
+      license_count: 1
+    - license_name: synopsys_primetime
+      license_count: 1
+    depends_on:
+    - task_002_d
+  - task_id: task_002_f
+    cpu_cores: 2
+    duration: 1745
+    licenses:
+    - license_name: cadence_innovus
+      license_count: 1
+    - license_name: synopsys_icc2
+      license_count: 1
+    depends_on: []
+  - task_id: task_002_g
+    cpu_cores: 10
+    duration: 2893
+    licenses:
+    - license_name: cadence_tempus
+      license_count: 1
+    - license_name: synopsys_primetime
+      license_count: 1
+    depends_on:
+    - task_002_d
+  - task_id: task_002_h
+    cpu_cores: 18
+    duration: 2870
+    licenses:
+    - license_name: cadence_innovus
+      license_count: 2
+    - license_name: synopsys_icc2
+      license_count: 1
+    depends_on:
+    - task_002_f
+- job_id: job_memory_ctrl_003
+  submit_time: 229
+  deadline: 43200
+  tasks:
+  - task_id: task_003_a
+    cpu_cores: 11
+    duration: 1838
+    licenses:
+    - license_name: cadence_genus
+      license_count: 2
+    - license_name: synopsys_dc
+      license_count: 1
+    depends_on: []
+  - task_id: task_003_b
+    cpu_cores: 13
+    duration: 5648
+    licenses:
+    - license_name: synopsys_icc2
+      license_count: 2
+    - license_name: cadence_innovus
+      license_count: 1
+    depends_on: []
+  - task_id: task_003_c
+    cpu_cores: 21
+    duration: 11091
+    licenses:
+    - license_name: cadence_innovus
+      license_count: 2
+    - license_name: synopsys_icc2
+      license_count: 1
+    depends_on: []
+  - task_id: task_003_d
+    cpu_cores: 11
+    duration: 1254
+    licenses:
+    - license_name: cadence_tempus
+      license_count: 1
+    - license_name: synopsys_primetime
+      license_count: 1
+    depends_on:
+    - task_003_c
+  - task_id: task_003_e
+    cpu_cores: 4
+    duration: 2367
+    licenses:
+    - license_name: cadence_voltus_fi
+      license_count: 1
+    - license_name: synopsys_primetime_si
+      license_count: 1
+    depends_on:
+    - task_003_c
+  - task_id: task_003_f
+    cpu_cores: 4
+    duration: 5859
+    licenses:
+    - license_name: synopsys_formality
+      license_count: 1
+    - license_name: cadence_conformal
+      license_count: 1
+    depends_on:
+    - task_003_a
+  - task_id: task_003_g
+    cpu_cores: 9
+    duration: 3290
+    licenses:
+    - license_name: synopsys_primetime_px
+      license_count: 1
+    - license_name: cadence_voltus
+      license_count: 1
+    depends_on:
+    - task_003_c
+  - task_id: task_003_h
+    cpu_cores: 9
+    duration: 2516
+    licenses:
+    - license_name: cadence_tempus
+      license_count: 1
+    - license_name: synopsys_primetime
+      license_count: 1
+    depends_on:
+    - task_003_c
+  - task_id: task_003_i
+    cpu_cores: 16
+    duration: 8947
+    licenses:
+    - license_name: synopsys_icc2
+      license_count: 2
+    - license_name: cadence_innovus
+      license_count: 1
+    depends_on: []
+  - task_id: task_003_j
+    cpu_cores: 6
+    duration: 4797
+    licenses:
+    - license_name: cadence_conformal
+      license_count: 1
+    - license_name: synopsys_formality
+      license_count: 1
+    depends_on:
+    - task_003_a
+  - task_id: task_003_k
+    cpu_cores: 6
+    duration: 2783
+    licenses:
+    - license_name: synopsys_formality
+      license_count: 1
+    - license_name: cadence_conformal
+      license_count: 1
+    depends_on:
+    - task_003_a
+- job_id: job_io_subsystem_004
+  submit_time: 900
+  deadline: 43200
+  tasks:
+  - task_id: task_004_a
+    cpu_cores: 19
+    duration: 840
+    licenses:
+    - license_name: cadence_genus
+      license_count: 2
+    - license_name: synopsys_dc
+      license_count: 1
+    depends_on: []
+  - task_id: task_004_b
+    cpu_cores: 33
+    duration: 7207
+    licenses:
+    - license_name: synopsys_icc2
+      license_count: 2
+    - license_name: cadence_innovus
+      license_count: 1
+    depends_on: []
+  - task_id: task_004_c
+    cpu_cores: 25
+    duration: 7851
+    licenses:
+    - license_name: cadence_innovus
+      license_count: 2
+    - license_name: synopsys_icc2
+      license_count: 1
+    depends_on: []
+  - task_id: task_004_d
+    cpu_cores: 2
+    duration: 2135
+    licenses:
+    - license_name: cadence_tempus
+      license_count: 1
+    - license_name: synopsys_primetime
+      license_count: 1
+    depends_on:
+    - task_004_c
+  - task_id: task_004_e
+    cpu_cores: 2
+    duration: 630
+    licenses:
+    - license_name: cadence_jaspergold
+      license_count: 1
+    - license_name: synopsys_spyglass
+      license_count: 1
+    depends_on: []
+  - task_id: task_004_f
+    cpu_cores: 11
+    duration: 2311
+    licenses:
+    - license_name: cadence_innovus
+      license_count: 1
+    - license_name: synopsys_icc2
+      license_count: 1
+    depends_on:
+    - task_004_b
+  - task_id: task_004_g
+    cpu_cores: 2
+    duration: 1980
+    licenses:
+    - license_name: cadence_innovus
+      license_count: 1
+    - license_name: synopsys_icc2
+      license_count: 1
+    depends_on: []
+  - task_id: task_004_h
+    cpu_cores: 2
+    duration: 2171
+    licenses:
+    - license_name: cadence_conformal
+      license_count: 1
+    - license_name: synopsys_formality
+      license_count: 1
+    depends_on:
+    - task_004_a
+  - task_id: task_004_i
+    cpu_cores: 7
+    duration: 3399
+    licenses:
+    - license_name: synopsys_primetime
+      license_count: 1
+    - license_name: cadence_tempus
+      license_count: 1
+    depends_on:
+    - task_004_c
+  - task_id: task_004_j
+    cpu_cores: 16
+    duration: 7049
+    licenses:
+    - license_name: cadence_innovus
+      license_count: 2
+    - license_name: synopsys_icc2
+      license_count: 1
+    depends_on:
+    - task_004_g
+  - task_id: task_004_k
+    cpu_cores: 7
+    duration: 3282
+    licenses:
+    - license_name: cadence_innovus
+      license_count: 1
+    - license_name: synopsys_icc2
+      license_count: 1
+    depends_on:
+    - task_004_j
+  - task_id: task_004_l
+    cpu_cores: 2
+    duration: 7179
+    licenses:
+    - license_name: cadence_conformal
+      license_count: 1
+    - license_name: synopsys_formality
+      license_count: 1
+    depends_on:
+    - task_004_a
+  - task_id: task_004_m
+    cpu_cores: 13
+    duration: 2720
+    licenses:
+    - license_name: synopsys_icc2
+      license_count: 1
+    - license_name: cadence_innovus
+      license_count: 1
+    depends_on:
+    - task_004_j
+- job_id: job_cache_ctrl_005
+  submit_time: 1471
+  deadline: 43200
+  tasks:
+  - task_id: task_005_a
+    cpu_cores: 18
+    duration: 1126
+    licenses:
+    - license_name: cadence_genus
+      license_count: 2
+    - license_name: synopsys_dc
+      license_count: 1
+    depends_on: []
+  - task_id: task_005_b
+    cpu_cores: 16
+    duration: 6371
+    licenses:
+    - license_name: cadence_innovus
+      license_count: 2
+    - license_name: synopsys_icc2
+      license_count: 1
+    depends_on: []
+  - task_id: task_005_c
+    cpu_cores: 27
+    duration: 11706
+    licenses:
+    - license_name: synopsys_icc2
+      license_count: 2
+    - license_name: cadence_innovus
+      license_count: 1
+    depends_on: []
+  - task_id: task_005_d
+    cpu_cores: 4
+    duration: 3709
+    licenses:
+    - license_name: cadence_tempus
+      license_count: 1
+    - license_name: synopsys_primetime
+      license_count: 1
+    depends_on:
+    - task_005_c
+  - task_id: task_005_e
+    cpu_cores: 11
+    duration: 4247
+    licenses:
+    - license_name: synopsys_icc2
+      license_count: 1
+    - license_name: cadence_innovus
+      license_count: 1
+    depends_on:
+    - task_005_b
+  - task_id: task_005_f
+    cpu_cores: 2
+    duration: 3495
+    licenses:
+    - license_name: synopsys_icc2
+      license_count: 1
+    - license_name: cadence_innovus
+      license_count: 1
+    depends_on: []
+  - task_id: task_005_g
+    cpu_cores: 21
+    duration: 6858
+    licenses:
+    - license_name: mentor_calibre
+      license_count: 2
+    - license_name: synopsys_icvalidator
+      license_count: 1
+    depends_on:
+    - task_005_c
+  - task_id: task_005_h
+    cpu_cores: 8
+    duration: 1091
+    licenses:
+    - license_name: synopsys_primetime
+      license_count: 1
+    - license_name: cadence_tempus
+      license_count: 1
+    depends_on:
+    - task_005_c
+  - task_id: task_005_i
+    cpu_cores: 24
+    duration: 8462
+    licenses:
+    - license_name: cadence_innovus
+      license_count: 3
+    - license_name: synopsys_icc2
+      license_count: 1
+    depends_on:
+    - task_005_f
+  - task_id: task_005_j
+    cpu_cores: 4
+    duration: 2646
+    licenses:
+    - license_name: cadence_innovus
+      license_count: 1
+    - license_name: synopsys_icc2
+      license_count: 1
+    depends_on: []
+  - task_id: task_005_k
+    cpu_cores: 2
+    duration: 4249
+    licenses:
+    - license_name: synopsys_icc2
+      license_count: 1
+    - license_name: cadence_innovus
+      license_count: 1
+    depends_on: []
+
