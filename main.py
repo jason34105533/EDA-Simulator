@@ -1,7 +1,7 @@
-# from job_submitter.submitter import JobSubmitter
-from simulator.scheduler import Scheduler
-from job_submitter.LATC_submitter import JobSubmitter
+# from job_submitter.submitter import JobSubmitter   # For Conservative
+from job_submitter.LATC_submitter import JobSubmitter   # For LATC
 
+from simulator.scheduler import Scheduler
 from simulator.resource_manager import ResourceManager
 from simulator.job import Job
 
@@ -32,8 +32,9 @@ if __name__ == "__main__":
     # Instantiate ResourceManager
     resource_manager = ResourceManager(CONFIG_FILE)
 
-    # Instantiate Scheduler
-    scheduler = Scheduler(resource_manager, TwoPhase=True, type="LATC")  # Change type to "LATC" for LATC scheduling
+    # Instantiate Scheduler, change type to "LATC" for LATC scheduling
+    scheduler = Scheduler(resource_manager, TwoPhase=True, type="LATC")  # type = "Standard", "LATC"
+    
     
     # Instantiate JobSubmitter and load workflow
     job_submitter = JobSubmitter(WORKFLOW_FILE, scheduler)
